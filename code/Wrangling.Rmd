@@ -17,7 +17,7 @@ library(dplyr)
 ```
 
 ```{r}
-drinks_data <- read_csv(here::here("all_drinks.csv"))
+drinks_data <- read_csv(here::here("data/all_drinks.csv"))
 ```
 
 We will start by checking the unique values contained in the columns that describe the ingredients
@@ -208,8 +208,7 @@ drinks_data_combined <- mutate_all(drinks_data_combined, ~ifelse(. == "NA", NA, 
 columns_to_modify <- colnames(drinks_data_combined)[7:310]
 
 # Use mutate_at to apply the string replacement to the selected columns
-drinks_data_combined <- mutate_at(drinks_data_combined, vars(columns_to_modify), 
-                                  funs(gsub("\\bbacardi\\b", "", .)))
+drinks_data_combined <- mutate_at(drinks_data_combined, vars(columns_to_modify), funs(gsub("\\bbacardi\\b", "", .)))
 
 ```
 
@@ -217,6 +216,12 @@ The binary columns have been pasted at the end of the dataframe. A good identifi
 
 ```{r}
 # Assuming your dataframes are named drinks_data_combined and drinks_data_encoded
-selected_columns <- drinks_data_encoded %>% select(27:331)
-drinks_data_combined <- bind_cols(drinks_data_combined, selected_columns)
+#selected_columns <- drinks_data_encoded %>% select(27:331)
+#drinks_data_combined <- bind_cols(drinks_data_combined, selected_columns)
+saveRDS(drinks_data_combined, file = "drinks.rds")
 ```
+
+```{r}
+df <- readRDS("drinks.rds")
+```
+
