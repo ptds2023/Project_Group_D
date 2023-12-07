@@ -40,9 +40,22 @@ Not sure:
 ```{r}
 unique_ing <- unique(colnames(cocktails)) %>% str_trim() %>% sort()
 
-alchohol_vec <- c("151 bacardi rum", "absinthe", "absolut citron", "absolut kurant", "absolut peppar", "absolut vodka", "advocaat", "ale", "amaretto", "anisette", "aperol", "apfelkorn", "apple brandy", "apple cider", "apple schnapps", "applejack", "apricot brandy", "aquavit", "añejo rum", "bacardi limon", "baileys irish cream", "banana liqueur", "beer", "benedictine", "black sambuca", "blackberry brandy", "blended whiskey", "blue curacao", "blueberry schnapps", "bourbon", "brandy", "butterscotch schnapps", "cachaca", "campari", "chambord raspberry liqueur", "champagne", "cherry brandy", "cherry heering", "cherry liqueur","chocolate liqueur", "cider", "coconut liqueur", "coconut rum", "coffee brandy", "coffee liqueur", "cognac", "cointreau", "corona", "cranberry vodka", "cream of coconut", "creme de banane", "creme de cacao", "creme de cassis", "creme de mure", "crown royal", "curacao", "dark creme de cacao", "dark rum","drambuie", "dry vermouth", "dubonnet rouge", "erin cream", "everclear", "firewater", "frangelico", "galliano", "gin", "godiva liqueur", "gold tequila", "goldschlager", "grain alcohol", "grand marnier", "green chartreuse", "green creme de menthe", "guinness stout", "hot damn", "irish cream", "irish whiskey", "jack daniels", "jim beam", "johnnie walker", "jägermeister", "kahlua", "kirschwasser", "kiwi liqueur", "lager", "lemon vodka", "light rum", "lillet blanc", "lime vodka", "malibu rum", "maraschino liqueur", "melon liqueur", "midori melon liqueur", "orange curacao", "ouzo", "peach brandy", "peach schnapps", "peach vodka", "peppermint schnapps", "peychaud bitters", "pisang ambon", "pisco", "port", "prosecco", "raspberry liqueur", "raspberry vodka", "red wine", "ricard", "rum", "rumple minze", "rye whiskey", "sambuca", "scotch", "sherry", "sloe gin", "southern comfort", "spiced rum", "st. germain", "strawberry liqueur", "strawberry schnapps", "sweet vermouth", "tennessee whiskey", "tequila", "tia maria", "triple sec", "vanilla vodka", "vermouth", "vodka", "whiskey", "white creme de menthe", "white rum", "wild turkey", "wine", "yellow chartreuse", "yukon jack")
+alcohol_vec <- c("151 bacardi rum", "absinthe", "absolut citron", "absolut kurant", "absolut peppar", "absolut vodka", "advocaat", "ale", "amaretto", "anisette", "aperol", "apfelkorn", "apple brandy", "apple cider", "apple schnapps", "applejack", "apricot brandy", "aquavit", "añejo rum", "bacardi limon", "baileys irish cream", "banana liqueur", "beer", "benedictine", "black sambuca", "blackberry brandy", "blended whiskey", "blue curacao", "blueberry schnapps", "bourbon", "brandy", "butterscotch schnapps", "cachaca", "campari", "chambord raspberry liqueur", "champagne", "cherry brandy", "cherry heering", "cherry liqueur","chocolate liqueur", "cider", "coconut liqueur", "coconut rum", "coffee brandy", "coffee liqueur", "cognac", "cointreau", "corona", "cranberry vodka", "cream of coconut", "creme de banane", "creme de cacao", "creme de cassis", "creme de mure", "crown royal", "curacao", "dark creme de cacao", "dark rum","drambuie", "dry vermouth", "dubonnet rouge", "erin cream", "everclear", "firewater", "frangelico", "galliano", "gin", "godiva liqueur", "gold tequila", "goldschlager", "grain alcohol", "grand marnier", "green chartreuse", "green creme de menthe", "guinness stout", "hot damn", "irish cream", "irish whiskey", "jack daniels", "jim beam", "johnnie walker", "jägermeister", "kahlua", "kirschwasser", "kiwi liqueur", "lager", "lemon vodka", "light rum", "lillet blanc", "lime vodka", "malibu rum", "maraschino liqueur", "melon liqueur", "midori melon liqueur", "orange curacao", "ouzo", "peach brandy", "peach schnapps", "peach vodka", "peppermint schnapps", "peychaud bitters", "pisang ambon", "pisco", "port", "prosecco", "raspberry liqueur", "raspberry vodka", "red wine", "ricard", "rum", "rumple minze", "rye whiskey", "sambuca", "scotch", "sherry", "sloe gin", "southern comfort", "spiced rum", "st. germain", "strawberry liqueur", "strawberry schnapps", "sweet vermouth", "tennessee whiskey", "tequila", "tia maria", "triple sec", "vanilla vodka", "vermouth", "vodka", "whiskey", "white creme de menthe", "white rum", "wild turkey", "wine", "yellow chartreuse", "yukon jack")
 
-ingredients_vec <- setdiff(unique_ing, alchohol_vec)
+ingredients_vec <- setdiff(unique_ing, alcohol_vec)
+```
+
+```{r}
+cocktails %>% 
+  select(-c(Type, Category, Picture, Glass, Recipe)) %>% 
+  pivot_longer(-Name, names_to = "ingredient", values_to = "quantity") %>% 
+  drop_na() %>% 
+  count(ingredient) %>% 
+  arrange(desc(n)) %>% 
+  filter(ingredient %in% alcohol_vec)
+
+cocktails %>% 
+  count(Type)
 ```
 
 # Filtering function
@@ -100,3 +113,10 @@ show_recipe <- function(selected){
 }
 show_recipe("gin and tonic")
 ```
+```{r}
+cocktailApp <- function(){
+  
+}
+use_r("cocktailApp")
+```
+

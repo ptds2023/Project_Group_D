@@ -15,4 +15,6 @@ Description: The CocktailSelector package can be used to find cocktails containi
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports:
+    tidyverse
 RoxygenNote: 7.2.3
