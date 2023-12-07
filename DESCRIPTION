@@ -7,7 +7,6 @@ Authors@R:
     person("Radoslaw", "", email = "@unil.ch", role = c("aut", "cre"))
     person("Candelaria", "Retamal", email = "candelaria.retamalmartinez@unil.ch", role = c("aut", "cre"))
     person("Jordan", "Vazquez", email = "jordan.vazquez@unil.ch", role = c("aut", "cre"))
-Maintainer: jordan.vazquez@unil.ch
 Description: The CocktailSelector package can be used to find cocktails containing
     a pre-defined selection of ingredients. It give a list of cocktails satisfying
     the input criteria, shows the ingredients needed for that cocktail, and explains
@@ -16,5 +15,6 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    tidyverse
+    tidyverse,
+    here
 RoxygenNote: 7.2.3
