@@ -1,0 +1,28 @@
+---
+title: "Surprise function"
+author: "Candelaria Retamal"
+date: "2023-12-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Surprise me Function
+
+This function creates a random selection of three recipes among our cocktail dataset. We will use the sample built-in function.
+
+```{r}
+df <- readRDS("drinks.rds")
+
+surprise_me <- function(df, n) {
+  # Use sample() to randomly select rows
+  random_rows <- df[sample(nrow(df), n), , drop = FALSE]
+  # Remove row names
+  row.names(random_rows) <- NULL
+  return(random_rows)
+}
+
+surprise_me(df,3)
+```
