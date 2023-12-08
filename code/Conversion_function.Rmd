@@ -1,0 +1,238 @@
+---
+title: "Conversion function"
+author: "Candelaria Retamal"
+date: "2023-12-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Conversion function
+
+In this code we will create a function for transforming the units of the ingredients from imperial to international system. This will be incorporated as a function for the R package afterwards. The methodology for making the conversion is the following: We will upload the data, look at the information that contains the measurements. If the unit contains imperial units (for example ounces - oz) we will convert them to a practical unit in the international system (for example ml).
+
+```{r}
+df <- readRDS("drinks.rds")
+```
+
+We start by separating the string that contains the information for the measurements between number and unit. We intend to see how many different units we would need to pass from imperial to international.
+
+```{r}
+# Assuming your dataframe is named df
+library(stringr)
+
+# Specify the range of columns
+measure_cols <- df[, 7:310]
+
+# Extract unique measurement units from all cells in the specified range
+unique_units <- unique(unlist(apply(measure_cols, c(1, 2), function(x) {
+  units <- str_extract(x, "[a-zA-Z]+")
+  units[!is.na(units)]  # Remove NAs
+})))
+
+```
+
+```{r}
+# Print the unique measurement units
+print(unique_units)
+```
+
+```{r}
+imperial<- c("oz", "gal", "qt","pint", "lb", "quart","inch")
+international <- c("cl","ml","dl","l","gr","kg")
+```
+
+The logical step would be making the conversion only for those units in imperial or international. While analyzing the data we realized that the numbers are not prepared for working in a conversion of units. the main issue is the following: we have high heterogeneity in the way in which numbers are presented. The following are the main options that have been spotted as examples: (1) 1 oz; (2) 1.5 lb; (3) 1/4 kg; (4) 1 1/2 spoon; (5) 1-2 dash. We need to create one single format to show the numbers, preferably as decimal or whole numbers, and not in fractional notation or as a range. For this purpose we implement the following function for homogenizing the numbers:
+
+```{r}
+correctFractions <- function(data, decimals = 1) {
+  # Iterate over the rows and columns of the dataset
+  for (i in 1:nrow(data)) {
+    for (j in 1:ncol(data)) {
+      # Check if the value follows the specified pattern for integers plus fraction
+      integerPattern <- "([0-9]+) ([0-9]+)/([0-9]+)"
+      if (!is.na(data[i, j]) && grepl(integerPattern, data[i, j])) {
+        # Extract parts of the value
+        parts <- str_match(data[i, j], integerPattern)
+        integerPart <- as.numeric(parts[2])
+        numerator <- as.numeric(parts[3])
+        denominator <- as.numeric(parts[4])
+        
+        # Calculate the sum
+        sumValue <- integerPart + numerator/denominator
+        
+        # Round the value to the specified number of decimals
+        roundedSum <- round(sumValue, decimals)
+        
+        # Create the new value without repeating the unit
+        new_value <- paste(roundedSum, gsub("\\d+ \\d+/\\d+ (.+)", "\\1", data[i, j]))
+        
+        # Update the dataset
+        data[i, j] <- new_value
+      } else {
+        # Check if the value follows the specified pattern for fractions
+        fractionPattern <- "([0-9]+)/([0-9]+)"
+        if (!is.na(data[i, j]) && grepl(fractionPattern, data[i, j])) {
+          # Extract parts of the value
+          parts <- str_match(data[i, j], fractionPattern)
+          numerator <- as.numeric(parts[2])
+          denominator <- as.numeric(parts[3])
+          
+          # Calculate the decimal value
+          decimalValue <- numerator/denominator
+          
+          # Round the value to the specified number of decimals
+          roundedValue <- round(decimalValue, decimals)
+          
+          # Create the new value
+          new_value <- paste(roundedValue, gsub("\\d+/\\d+ (.+)", "\\1", data[i, j]))
+          
+          # Update the dataset
+          data[i, j] <- new_value
+        } else {
+          # Check if the value follows the specified pattern for "number-dash-number"
+          dashPattern <- "([0-9]+)-([0-9]+)"
+          if (!is.na(data[i, j]) && grepl(dashPattern, data[i, j])) {
+            # Extract the part after the dash
+            parts <- str_match(data[i, j], dashPattern)
+            afterDash <- parts[3]
+            
+            # Create the new value
+            new_value <- paste(afterDash, gsub("\\d+-\\d+ (.+)", "\\1", data[i, j]))
+            
+            # Update the dataset
+            data[i, j] <- new_value
+          }
+        }
+      }
+    }
+  }
+  
+  # Remove any values of the type "space-number-slash-number"
+  data <- data.frame(lapply(data, function(x) gsub("\\s\\d+/\\d+", "", x, perl = TRUE)))
+  
+  # Clean column names and remove trailing whitespaces
+  colnames(data) <- gsub("\\.$", "", gsub("\\.", " ", colnames(data)))
+  colnames(data) <- gsub("\\s+$", "", colnames(data))
+  
+  # Print the final version of the dataset
+  return(data)
+}
+
+# Example usage:
+# df <- correctFractions(df, decimals = 1)
+
+
+# Function to clean column names (in case the inside function does not work in R package)
+# clean_column_names <- function(df) {
+#   colnames(df) <- gsub("\\.$", "", gsub("\\.", " ", colnames(df)))
+#   return(df)
+# }
+
+# Apply the function to the data frame
+df <- correctFractions(df, decimals = 1)
+
+# Print the cleaned data frame
+print(df)
+```
+
+Now we made proceed with the conversion of units. We create a function that receives the system. If it is international, all the measurements shown in imperial are changed to international. If it is imperial, an analogue procedure is taken.
+
+```{r}
+convertUnits <- function(data, conversion_direction, min_decimals = 1) {
+  # Define conversion factors
+  imperial_to_international <- c(29.5735, 1000, 946.353, 473.176, 0.453592, 0.946353, 2.54)
+  international_to_imperial <- c(0.033814, 0.001, 0.00105669, 0.00211338, 2.20462, 1.05669, 0.393701)
+  
+  # Define units for conversion
+  imperial_units <- c("oz", "gal", "qt", "pint", "lb", "quart", "inch")
+  international_units <- c("cl", "ml", "dl", "l", "gr", "kg", "cm")
+  
+  # Perform conversion based on the specified direction
+  if (conversion_direction == "imperial_to_international") {
+    for (i in 1:nrow(data)) {
+      for (j in 1:ncol(data)) {
+        if (!is.na(data[i, j])) {
+          parts <- str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
+          if (!is.null(parts) && length(parts) == 3 && parts[3] %in% imperial_units) {
+            value <- as.numeric(parts[2])
+            unit <- parts[3]
+            if (unit %in% c("oz", "gal", "qt", "pint", "quart")) {
+              # Convert volume to ml
+              converted_value <- value * imperial_to_international[which(imperial_units == "oz")]
+              new_unit <- "ml"
+            } else if (unit %in% c("lb")) {
+              # Convert mass to kg
+              converted_value <- value * imperial_to_international[which(imperial_units == "lb")]
+              new_unit <- "kg"
+            } else if (unit %in% c("inch")) {
+              # Convert distance to cm
+              converted_value <- value * imperial_to_international[which(imperial_units == "inch")]
+              new_unit <- "cm"
+            } else {
+              # Keep the original value if not in the specified units
+              converted_value <- value
+              new_unit <- unit
+            }
+            
+            # Round the converted value to the specified number of decimals
+            rounded_value <- signif(converted_value, min_decimals)
+            
+            # Update the dataset
+            data[i, j] <- paste(rounded_value, new_unit)
+          }
+        }
+      }
+    }
+  } else if (conversion_direction == "international_to_imperial") {
+    for (i in 1:nrow(data)) {
+      for (j in 1:ncol(data)) {
+        if (!is.na(data[i, j])) {
+          parts <- str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
+          if (!is.null(parts) && length(parts) == 3 && parts[3] %in% international_units) {
+            value <- as.numeric(parts[2])
+            unit <- parts[3]
+            if (unit %in% c("cl", "ml", "dl", "l")) {
+              # Convert volume to oz
+              converted_value <- value * international_to_imperial[which(international_units == "ml")]
+              new_unit <- "oz"
+            } else if (unit %in% c("gr", "kg")) {
+              # Convert mass to lb
+              converted_value <- value * international_to_imperial[which(international_units == "kg")]
+              new_unit <- "lb"
+            } else if (unit %in% c("cm")) {
+              # Convert distance to inch
+              converted_value <- value * international_to_imperial[which(international_units == "cm")]
+              new_unit <- "inch"
+            } else {
+              # Keep the original value if not in the specified units
+              converted_value <- value
+              new_unit <- unit
+            }
+            
+            # Round the converted value to the specified number of decimals
+            rounded_value <- signif(converted_value, min_decimals)
+            
+            # Update the dataset
+            data[i, j] <- paste(rounded_value, new_unit)
+          }
+        }
+      }
+    }
+  } else {
+    stop("Invalid conversion direction. Please specify 'imperial_to_international' or 'international_to_imperial'.")
+  }
+  
+  # Print the final version of the dataset
+  return(data)
+}
+
+# Apply function imperial to international
+df_imperial_to_international <- convertUnits(df, "imperial_to_international", min_decimals = 1)
+
+# Apply functioninternational to imperial
+df_international_to_imperial <- convertUnits(df, "international_to_imperial", min_decimals = 1)
+
+```
