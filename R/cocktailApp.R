@@ -7,9 +7,8 @@
 #' cocktailApp()
 cocktailApp <- function(){
   library(shiny)
-  data(drinks)
   # Load your dataset
-  data <- read.csv(here::here("ShinyApp/first.csv"))
+  data <- cocktails
 
   # Convert NA to FALSE and any other value to TRUE for ingredients
   data[,-(1:6)] <- !is.na(data[,-(1:6)])

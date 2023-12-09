@@ -4,6 +4,7 @@ Title: Cocktail Recommendation & Ingredients
 Version: 0.1.0
 Authors@R:
     person("Nathan", "", email = "@unil.ch", role = c("aut", "cre"))
+    person("Tiffany", "Davies", email = "", role = c("aut", "cre"))
     person("Radoslaw", "", email = "@unil.ch", role = c("aut", "cre"))
     person("Candelaria", "Retamal", email = "candelaria.retamalmartinez@unil.ch", role = c("aut", "cre"))
     person("Jordan", "Vazquez", email = "jordan.vazquez@unil.ch", role = c("aut", "cre"))
@@ -18,3 +19,5 @@ Imports:
     tidyverse,
     here
 RoxygenNote: 7.2.3
+Depends: 
+    R (>= 2.10)

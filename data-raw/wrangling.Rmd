@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(here)
 library(readr)
 library(dplyr)
-library(dplyr)
+library(devtools)
 ```
 
 ```{r}
@@ -209,7 +209,8 @@ columns_to_modify <- colnames(drinks_data_combined)[7:310]
 
 # Use mutate_at to apply the string replacement to the selected columns
 drinks_data_combined <- mutate_at(drinks_data_combined, vars(columns_to_modify), funs(gsub("\\bbacardi\\b", "", .)))
-
+#removing whitespace in column names
+colnames(drinks_data_combined) <- colnames(drinks_data_combined) %>% stringr::str_trim()
 ```
 
 The binary columns have been pasted at the end of the dataframe. A good identifier to separate them is that they contain the word ingredient in the name (you may use grepl).
@@ -218,10 +219,7 @@ The binary columns have been pasted at the end of the dataframe. A good identifi
 # Assuming your dataframes are named drinks_data_combined and drinks_data_encoded
 #selected_columns <- drinks_data_encoded %>% select(27:331)
 #drinks_data_combined <- bind_cols(drinks_data_combined, selected_columns)
-saveRDS(drinks_data_combined, file = "drinks.rds")
-```
-
-```{r}
-df <- readRDS("drinks.rds")
+cocktails <- drinks_data_combined
+usethis::use_data(cocktails)
 ```
 

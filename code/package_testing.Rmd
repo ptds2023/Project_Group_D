@@ -17,7 +17,7 @@ library(janitor)
 ```
 
 ```{r}
-cocktails <- readRDS(here("code/drinks.rds"))
+cocktails <- cocktails
 ```
 
 ```{r}
@@ -60,7 +60,6 @@ cocktails %>%
 
 # Filtering function
 ```{r}
-cocktails <- cocktails %>% clean_names()
 #removing whitespace in colnames
 colnames(cocktails) <- colnames(cocktails) %>% str_trim()
 
