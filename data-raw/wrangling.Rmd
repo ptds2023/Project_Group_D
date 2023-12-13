@@ -255,7 +255,7 @@ are_alc %>%
   select(-c(Category, Picture, Glass, Recipe)) %>%
   pivot_longer(-c(Name, Type), names_to = "ingredient", values_to = "quantity", values_drop_na  = T)
 
-alcohol_vec <- append(alcohol_vec, c("maui","peachtree schnapps","surge"))
+alcohol_vec <- append(alcohol_vec, c("maui","peachtree schnapps","surge")) %>% sort()
 ```
 Dropping cocktails which contain no ingredients, or those that don't make sense:
 - black forest shake --> alcoholic but contains only ice
@@ -274,13 +274,13 @@ cocktails <- cocktails %>%
 ```
 
 #Creating rda files
-```{r}
+```{r eval=FALSE}
 # Assuming your dataframes are named drinks_data_combined and drinks_data_encoded
 #selected_columns <- drinks_data_encoded %>% select(27:331)
 #drinks_data_combined <- bind_cols(drinks_data_combined, selected_columns)
 usethis::use_data(cocktails, overwrite = TRUE)
 usethis::use_data(unique_ing)
-usethis::use_data(alcohol_vec)
+usethis::use_data(alcohol_vec, overwrite = TRUE)
 usethis::use_data(side_ing_vec)
 ```
 

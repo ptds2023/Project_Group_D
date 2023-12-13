@@ -7,15 +7,9 @@
 #' cocktailApp()
 cocktailApp <- function(){
   library(shiny)
+
   # Load your dataset
-  data <- cocktails
-
-  # Convert NA to FALSE and any other value to TRUE for ingredients
-  data[,-(1:6)] <- !is.na(data[,-(1:6)])
-
-  # Clean up ingredient names by removing dots
-  cleaned_ingredient_names <- gsub("\\.", " ", colnames(data)[7:ncol(data)])
-
+  cleaned_ingredient_names <- unique_ing
   # Define UI
   ui <- fluidPage(
     titlePanel("Cocktail Explorer"),
@@ -24,9 +18,9 @@ cocktailApp <- function(){
                tabPanel("Cocktail List",
                         sidebarLayout(
                           sidebarPanel(
-                            selectInput("ingredient1", "Ingredient 1", choices = c("Choose" = "", cleaned_ingredient_names), selected = "", multiple = FALSE),
-                            selectInput("ingredient2", "Ingredient 2", choices = c("Choose" = "", cleaned_ingredient_names), selected = "", multiple = FALSE),
-                            selectInput("ingredient3", "Ingredient 3", choices = c("Choose" = "", cleaned_ingredient_names), selected = "", multiple = FALSE),
+                            selectInput("ingredient1", "Alcohol", choices = c("Choose" = "", alcohol_vec), selected = "Choose", multiple = FALSE),
+                            selectInput("ingredient2", "Side Ingredient 1", choices = c("Choose" = "", side_ing_vec), selected = "Choose", multiple = FALSE),
+                            selectInput("ingredient3", "Side Ingredient 2", choices = c("Choose" = "", side_ing_vec), selected = "Choose", multiple = FALSE),
                             actionButton("clearButton", "Clear Ingredients")
                           ),
                           mainPanel(
@@ -46,34 +40,30 @@ cocktailApp <- function(){
   server <- function(input, output, session) {
     selected_cocktail <- reactiveVal(NULL)
 
+    # filtered_data <- reactive({
+    #   # Start with the full dataset
+    #   result <- cocktails
+    #
+    #   # Apply filters based on selected ingredients
+    #   colname1 <- input$ingredient1
+    #   colname2 <- input$ingredient2
+    #   colname3 <- input$ingredient3
+    #
+    #   if (!is.null(colname1) && colname1 != "") {
+    #     result <- result[!is.na(result[[colname1]]), ]
+    #   }
+    #   if (!is.null(colname2) && colname2 != "") {
+    #     result <- result[!is.na(result[[colname2]]), ]
+    #   }
+    #   if (!is.null(colname3) && colname3 != "") {
+    #     result <- result[!is.na(result[[colname3]]), ]
+    #   }
+    #
+    #   result
+    # })
+
     filtered_data <- reactive({
-      # Start with the full dataset
-      result <- data
-
-      # Helper function to get the original column name from cleaned name
-      get_original_colname <- function(cleaned_name) {
-        if(cleaned_name != "Choose" && cleaned_name != "") {
-          return(colnames(data)[7:ncol(data)][cleaned_ingredient_names == cleaned_name])
-        }
-        return(NULL)
-      }
-
-      # Apply filters based on selected ingredients
-      colname1 <- get_original_colname(input$ingredient1)
-      colname2 <- get_original_colname(input$ingredient2)
-      colname3 <- get_original_colname(input$ingredient3)
-
-      if (!is.null(colname1) && colname1 != "") {
-        result <- result[result[[colname1]] == TRUE, ]
-      }
-      if (!is.null(colname2) && colname2 != "") {
-        result <- result[result[[colname2]] == TRUE, ]
-      }
-      if (!is.null(colname3) && colname3 != "") {
-        result <- result[result[[colname3]] == TRUE, ]
-      }
-
-      result
+      filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
     })
 
     #first output
@@ -81,15 +71,18 @@ cocktailApp <- function(){
       # Get the filtered data
       sub_data <- filtered_data()
 
-      # Create a list of clickable cocktail names with pictures
-      cocktailList <- lapply(1:nrow(sub_data), function(i) {
-        wellPanel(
-          actionLink(inputId = paste("cocktail_click", i, sep = "_"), label = sub_data$Name[i]),
-          img(src = sub_data$Picture[i], height = "200px")
-        )
-      })
-
-      do.call(tagList, cocktailList)
+      if(nrow(sub_data) == 0){
+        HTML("<p>No cocktail found</p>")
+      }else{
+        # Create a list of clickable cocktail names with pictures
+        cocktailList <- lapply(1:nrow(sub_data), function(i) {
+          wellPanel(
+            actionLink(inputId = paste("cocktail_click", i, sep = "_"), label = sub_data$Name[i]),
+            img(src = sub_data$Picture[i], height = "200px")
+          )
+        })
+        do.call(tagList, cocktailList)
+      }
     })
 
     observe({
