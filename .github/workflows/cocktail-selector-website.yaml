@@ -16,6 +16,7 @@ jobs:
 
       - name: Install pkgdown and dependencies
         run: |
+          install.packages("pkgdown")
           install.packages("remotes")
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
