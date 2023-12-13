@@ -42,7 +42,7 @@ cocktailApp <- function(){
     )
   )
 
-  # Define server logic
+  #server
   server <- function(input, output, session) {
     selected_cocktail <- reactiveVal(NULL)
 
@@ -76,6 +76,7 @@ cocktailApp <- function(){
       result
     })
 
+    #first output
     output$cocktailList <- renderUI({
       # Get the filtered data
       sub_data <- filtered_data()
@@ -103,6 +104,7 @@ cocktailApp <- function(){
       }
     })
 
+    #second output
     output$cocktailDetails <- renderUI({
       cocktail <- selected_cocktail()
       if (is.null(cocktail) || nrow(cocktail) == 0) return(NULL)
