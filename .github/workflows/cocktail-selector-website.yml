@@ -1,32 +1,38 @@
-name: pkgdown 
+name: Build and Deploy pkgdown Site
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [main]
+    paths:
+      - '**.R'
+      - '**.md'
+      - 'DESCRIPTION'
+      - 'vignettes/**'
+      - '.github/workflows/**'
+  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: r-lib/actions/setup-r@v2
-    - uses: r-lib/actions/setup-pandoc@v2
-    - name: Install pkgdown and dependencies
-      run: |
-        install.packages('pkgdown')
-        install.packages('remotes')
-        remotes::install_deps(dependencies = TRUE)
-      shell: Rscript {0}
-    - name: pkgdown 
-      run: pkgdown::build_site()
-      shell: Rscript {0}
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.1.4
-      with:
-        branch: gh-pages
-        folder: docs
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install pkgdown and dependencies
+        run: |
+          install.packages("pkgdown")
+          install.packages("remotes")
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
+
+      - name: Build pkgdown Site
+        run: pkgdown::build_site()
+        shell: Rscript {0}
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
