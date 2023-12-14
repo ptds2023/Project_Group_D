@@ -5,7 +5,7 @@
 #' @param ing1 A string
 #' @param ing2 A string
 #'
-#' @return a filtered dataframe based on inputs
+#' @return a filtered drinks dataframe based on inputs
 #' @export
 #'
 #' @examples

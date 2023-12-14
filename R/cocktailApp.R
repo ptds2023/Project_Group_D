@@ -117,8 +117,9 @@ cocktailApp <- function(){
       output$ingredientsTable <- renderTable({
         #setting cocktail variable
         cocktail <- selected_cocktail()
+        cocktail_name <- cocktail$Name
         #calling package function to render table
-        render_ing_table(cocktail)
+        render_ing_table(cocktail_name)
       })
     })
 

@@ -16,11 +16,11 @@ filtering_fun(df, alcohol = NULL, ing1 = NULL, ing2 = NULL)
 \item{ing2}{A string}
 }
 \value{
-a filtered dataframe based on inputs
+a filtered drinks dataframe based on inputs
 }
 \description{
 Filtering for cocktails list
 }
 \examples{
-filtering_fun(cocktails)
+filtering_fun(cocktails, "gin")
 }
