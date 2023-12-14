@@ -2,6 +2,7 @@
 #'
 #' @return Opens shiny app
 #' @import shiny
+#' @importFrom magrittr %>%
 #' @export
 cocktailApp <- function(){
   # Define UI
@@ -77,22 +78,48 @@ cocktailApp <- function(){
 
     #second output
     output$cocktailDetails <- renderUI({
-      cocktail <- selected_cocktail()
-      if (is.null(cocktail) || nrow(cocktail) == 0) return(NULL)
+      # cocktail <- selected_cocktail()
+      # if (is.null(cocktail) || nrow(cocktail) == 0) return(NULL)
+      #
+      # # Extract ingredient names
+      # ingredient_names <- colnames(cocktail)[7:ncol(cocktail)]
+      # selected_ingredients <- ingredient_names[!is.na(cocktail[1, 7:ncol(cocktail)])]
+      #
+      # # Display detailed information
+      # renderTable(
+      #   xtable::xtable(as.data.frame(selected_ingredients))
+      # )
+      # tagList(
+      #   h2(cocktail$Name[1]),
+      #   img(src = cocktail$Picture[1], height = "200px"),
+      #   h3("Category: ", cocktail$Category[1]),
+      #   h4("Ingredients: ", paste(selected_ingredients, collapse = ", ")),
+      #   h4("Type: ", cocktail$Type[1]),
+      #   h4("Recipe: ", cocktail$Recipe[1])
+      # )
 
-      # Extract ingredient names
-      ingredient_names <- colnames(cocktail)[7:ncol(cocktail)]
-      selected_ingredients <- ingredient_names[!is.na(cocktail[1, 7:ncol(cocktail)])]
+      output$cocktailDetails <- renderUI({
+        #selecting cocktail which the user clicked on
+        cocktail <- selected_cocktail()
+        if (is.null(cocktail) || nrow(cocktail) == 0) return(NULL)
 
-      # Display detailed information
-      tagList(
-        h2(cocktail$Name[1]),
-        img(src = cocktail$Picture[1], height = "200px"),
-        h3("Category: ", cocktail$Category[1]),
-        h4("Ingredients: ", paste(selected_ingredients, collapse = ", ")),
-        h4("Type: ", cocktail$Type[1]),
-        h4("Recipe: ", cocktail$Recipe[1])
-      )
+        #creating multiple elements to display
+        title <- h2(cocktail$Name)
+        image <- tags$img(src = cocktail$Picture, height = "200px")
+        category <- h3(paste("Category:", cocktail$Category))
+        recipe <- h4("Recipe: ", cocktail$Recipe)
+        ingredients_table_html <- tableOutput("ingredientsTable")
+
+        #arrange elements in layout
+        tagList(title, image, category, ingredients_table_html, recipe)
+      })
+
+      output$ingredientsTable <- renderTable({
+        #setting cocktail variable
+        cocktail <- selected_cocktail()
+        #calling package function to render table
+        render_ing_table(cocktail)
+      })
     })
 
     # Clear button logic

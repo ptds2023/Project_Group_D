@@ -3,3 +3,4 @@
 export(cocktailApp)
 export(filtering_fun)
 import(shiny)
+importFrom(magrittr,"%>%")
