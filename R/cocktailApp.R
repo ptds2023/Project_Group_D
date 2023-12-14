@@ -17,7 +17,8 @@ cocktailApp <- function(){
                             selectInput("ingredient1", "Alcohol", choices = c("Choose" = "", alcohol_vec), selected = "Choose", multiple = FALSE),
                             uiOutput("sideIngredient1Dropdown"),
                             uiOutput("sideIngredient2Dropdown"),
-                            actionButton("clearButton", "Clear Ingredients")
+                            actionButton("clearButton", "Clear Ingredients"),
+                            actionButton("surpriseMeButton", "Surprise Me", icon = icon("random"))
                           ),
                           mainPanel(
                             uiOutput("cocktailList")
@@ -156,7 +157,7 @@ cocktailApp <- function(){
       filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
     })
 
-
+    addSurpriseMeObserver(input, output, session, cocktails, selected_cocktail)
 
     # Clear button logic
     observeEvent(input$clearButton, {
