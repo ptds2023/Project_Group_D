@@ -50,16 +50,20 @@ cocktailApp <- function(){
 
   #server
   server <- function(input, output, session) {
-    selected_cocktail <- reactiveVal(NULL)
 
-    # Call the function to update side ingredients
-    updateSideIngredients(input, session, cocktails)
+    # Show welcome message when the app starts
+    observe({
+      showModal(modalDialog(
+        title = "Welcome!",
+        textOutput("welcomeText"),
+        easyClose = TRUE,
+        footer = NULL
+      ))
+    })
 
-    # Call the function to render dynamic UI
-    renderSideIngredientUI(input, output)
-
-    filtered_data <- reactive({
-      filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
+    # Render the welcome text
+    output$welcomeText <- renderText({
+      welcome_message()
     })
 
     #first output
@@ -140,6 +144,20 @@ cocktailApp <- function(){
       })
     })
 
+    selected_cocktail <- reactiveVal(NULL)
+
+    # Call the function to update side ingredients
+    updateSideIngredients(input, session, cocktails)
+
+    # Call the function to render dynamic UI
+    renderSideIngredientUI(input, output)
+
+    filtered_data <- reactive({
+      filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
+    })
+
+
+
     # Clear button logic
     observeEvent(input$clearButton, {
       updateSelectInput(session, "ingredient1", selected = "")
@@ -147,20 +165,7 @@ cocktailApp <- function(){
       updateSelectInput(session, "ingredient3", selected = "")
     })
 
-    # Show welcome message when the app starts
-    observe({
-      showModal(modalDialog(
-        title = "Welcome!",
-        textOutput("welcomeText"),
-        easyClose = TRUE,
-        footer = NULL
-      ))
-    })
 
-    # Render the welcome text
-    output$welcomeText <- renderText({
-      welcome_message()
-    })
   }
 
 
