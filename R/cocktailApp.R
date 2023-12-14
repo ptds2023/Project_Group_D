@@ -1,13 +1,13 @@
 #' Shiny app function
 #'
 #' @return Opens shiny app
+#' @import shiny
 #' @export
 #'
 #' @examples
 #' cocktailApp()
 cocktailApp <- function(){
   library(shiny)
-
   # Load your dataset
   cleaned_ingredient_names <- unique_ing
   # Define UI
@@ -80,28 +80,6 @@ cocktailApp <- function(){
         }
       })
 
-    # filtered_data <- reactive({
-    #   # Start with the full dataset
-    #   result <- cocktails
-    #
-    #   # Apply filters based on selected ingredients
-    #   colname1 <- input$ingredient1
-    #   colname2 <- input$ingredient2
-    #   colname3 <- input$ingredient3
-    #
-    #   if (!is.null(colname1) && colname1 != "") {
-    #     result <- result[!is.na(result[[colname1]]), ]
-    #   }
-    #   if (!is.null(colname2) && colname2 != "") {
-    #     result <- result[!is.na(result[[colname2]]), ]
-    #   }
-    #   if (!is.null(colname3) && colname3 != "") {
-    #     result <- result[!is.na(result[[colname3]]), ]
-    #   }
-    #
-    #   result
-    # })
-
     filtered_data <- reactive({
       filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
     })
@@ -144,7 +122,7 @@ cocktailApp <- function(){
 
       # Extract ingredient names
       ingredient_names <- colnames(cocktail)[7:ncol(cocktail)]
-      selected_ingredients <- ingredient_names[cocktail[1, 7:ncol(cocktail)] == TRUE]
+      selected_ingredients <- ingredient_names[!is.na(cocktail[1, 7:ncol(cocktail)])]
 
       # Display detailed information
       tagList(
