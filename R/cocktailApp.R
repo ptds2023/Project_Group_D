@@ -34,59 +34,11 @@ cocktailApp <- function(){
   server <- function(input, output, session) {
     selected_cocktail <- reactiveVal(NULL)
 
-    # Observe changes in Alcohol and update side ingredient 1
-    observeEvent(input$ingredient1, {
-      if (input$ingredient1 != "" && input$ingredient1 != "Choose") {
-        # Filter cocktails that contain the selected alcohol
-        compatible_cocktails <- cocktails[!is.na(cocktails[[input$ingredient1]]), ]
+    # Call the function to update side ingredients
+    updateSideIngredients(input, session, cocktails)
 
-        # Identify columns (ingredients) that have non-NA values in these cocktails
-        ingredient_columns <- colnames(cocktails)[7:ncol(cocktails)]
-        non_na_ingredients <- ingredient_columns[colSums(!is.na(compatible_cocktails[ingredient_columns])) > 0]
-
-        # Exclude the selected alcohol from the ingredient lists
-        non_na_ingredients <- setdiff(non_na_ingredients, input$ingredient1)
-
-        # Update the choices of side ingredient 1 dropdown
-        updateSelectInput(session, "ingredient2", choices = c("Choose" = "", non_na_ingredients))
-      } else {
-        updateSelectInput(session, "ingredient2", choices = c("Choose" = ""))
-      }
-    })
-
-    # Dynamic UI for 'Side Ingredient 1' Dropdown
-    output$sideIngredient1Dropdown <- renderUI({
-      if (input$ingredient1 != "" && input$ingredient1 != "Choose") {
-        selectInput("ingredient2", "Side Ingredient 1", choices = c("Choose" = ""))
-      }
-    })
-
-    # Observe changes in side ingredient 1 and update side ingredient 2
-    observeEvent(input$ingredient2, {
-      if (input$ingredient2 != "" && input$ingredient2 != "Choose") {
-        # Filter cocktails that contain both the selected alcohol and ingredient1
-        compatible_cocktails <- cocktails[!is.na(cocktails[[input$ingredient1]]) & !is.na(cocktails[[input$ingredient2]]), ]
-
-        # Identify columns (ingredients) that have non-NA values in these cocktails
-        ingredient_columns <- colnames(cocktails)[7:ncol(cocktails)]
-        non_na_ingredients <- ingredient_columns[colSums(!is.na(compatible_cocktails[ingredient_columns])) > 0]
-
-        # Exclude the selected alcohol and ingredient1 from the ingredient lists
-        non_na_ingredients <- setdiff(non_na_ingredients, c(input$ingredient1, input$ingredient2))
-
-        # Update the choices of side ingredient 2 dropdown
-        updateSelectInput(session, "ingredient3", choices = c("Choose" = "", non_na_ingredients))
-      } else {
-        updateSelectInput(session, "ingredient3", choices = c("Choose" = ""))
-      }
-    })
-
-    # Dynamic UI for 'Side Ingredient 2' Dropdown
-    output$sideIngredient2Dropdown <- renderUI({
-      if (input$ingredient2 != "" && input$ingredient2 != "Choose") {
-        selectInput("ingredient3", "Side Ingredient 2", choices = c("Choose" = ""))
-      }
-    })
+    # Call the function to render dynamic UI
+    renderSideIngredientUI(input, output)
 
     filtered_data <- reactive({
       filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
