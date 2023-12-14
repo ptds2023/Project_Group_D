@@ -4,7 +4,6 @@
 #' @import shiny
 #' @export
 cocktailApp <- function(){
-  library(shiny)
   # Define UI
   ui <- fluidPage(
     titlePanel("Cocktail Explorer"),
