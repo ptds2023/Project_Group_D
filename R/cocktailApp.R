@@ -2,6 +2,7 @@
 #'
 #' @return Opens shiny app
 #' @import shiny
+#' @import htmltools
 #' @importFrom magrittr %>%
 #' @export
 cocktailApp <- function(){
@@ -27,9 +28,25 @@ cocktailApp <- function(){
                         mainPanel(
                           uiOutput("cocktailDetails")
                         )
+               ),
+               tabPanel("Information",
+                        mainPanel(
+                          h3("How to Use the Cocktail Explorer"),
+                          p("Welcome to the Cocktail Explorer! Here's how you can use this app:"),
+                          tags$ul(
+                            tags$li("Select an alcohol type from the 'Alcohol' dropdown menu."),
+                            tags$li("Based on your selection, the 'Side Ingredient 1' dropdown will be updated with compatible ingredients."),
+                            tags$li("After selecting a side ingredient, the 'Side Ingredient 2' dropdown will be updated."),
+                            tags$li("The app will display a list of cocktails based on your selections."),
+                            tags$li("Click on any cocktail to view its details, including recipe and ingredients."),
+                            tags$li("Use the 'Clear Ingredients' button to reset your selections at any time.")
+                          ),
+                          p("Enjoy exploring and discovering new cocktails!")
+                        )
                )
     )
   )
+
 
   #server
   server <- function(input, output, session) {
@@ -128,6 +145,21 @@ cocktailApp <- function(){
       updateSelectInput(session, "ingredient1", selected = "")
       updateSelectInput(session, "ingredient2", selected = "")
       updateSelectInput(session, "ingredient3", selected = "")
+    })
+
+    # Show welcome message when the app starts
+    observe({
+      showModal(modalDialog(
+        title = "Welcome!",
+        textOutput("welcomeText"),
+        easyClose = TRUE,
+        footer = NULL
+      ))
+    })
+
+    # Render the welcome text
+    output$welcomeText <- renderText({
+      welcome_message()
     })
   }
 
