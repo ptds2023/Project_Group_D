@@ -12,6 +12,3 @@ Opens shiny app
 \description{
 Shiny app function
 }
-\examples{
-cocktailApp()
-}

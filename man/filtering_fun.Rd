@@ -22,5 +22,5 @@ a filtered dataframe based on inputs
 Filtering for cocktails list
 }
 \examples{
-filtering_fun("vodka")
+filtering_fun(cocktails)
 }

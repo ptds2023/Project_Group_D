@@ -3,13 +3,8 @@
 #' @return Opens shiny app
 #' @import shiny
 #' @export
-#'
-#' @examples
-#' cocktailApp()
 cocktailApp <- function(){
   library(shiny)
-  # Load your dataset
-  cleaned_ingredient_names <- unique_ing
   # Define UI
   ui <- fluidPage(
     titlePanel("Cocktail Explorer"),

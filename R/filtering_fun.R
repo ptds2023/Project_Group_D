@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-#' filtering_fun("vodka")
+#' filtering_fun(cocktails)
 filtering_fun <- function(df, alcohol = NULL, ing1 = NULL, ing2 = NULL){
   result <- df
     if (!is.null(alcohol) && alcohol!="") {
