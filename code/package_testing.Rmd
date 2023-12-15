@@ -179,5 +179,7 @@ cocktails %>%
   filter(Name == "a1")
 
 parts <- str_match("1.75 shot", "([0-9.]+)\\s*([a-zA-Z]+)")
+
+convertUnits(cocktails, "imperial_to_international")
 ```
 

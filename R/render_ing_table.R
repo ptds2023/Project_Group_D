@@ -8,8 +8,8 @@
 #'
 #' @examples
 #' render_ing_table("daiquiri")
-render_ing_table <- function(selected_cocktail){
-  ing_table <- cocktails %>%
+render_ing_table <- function(df, selected_cocktail){
+  ing_table <- df %>%
     dplyr::filter(.data$Name == selected_cocktail) %>%
     dplyr::select(-c(.data$Type, .data$Category, .data$Picture, .data$Glass, .data$Recipe)) %>%
     tidyr::pivot_longer(-.data$Name, names_to = "Ingredient", values_to = "Quantity", values_drop_na = TRUE) %>%

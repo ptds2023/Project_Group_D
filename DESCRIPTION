@@ -22,7 +22,8 @@ Imports:
     shiny,
     magrittr,
     rlang, 
-    htmltools
+    htmltools,
+    stringr
 RoxygenNote: 7.2.3
 Depends: 
     R (>= 3.5.0)

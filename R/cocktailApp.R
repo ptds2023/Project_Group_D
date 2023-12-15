@@ -23,7 +23,11 @@ cocktailApp <- function(){
                             uiOutput("sideIngredient1Dropdown"),
                             uiOutput("sideIngredient2Dropdown"),
                             actionButton("clearButton", "Clear Ingredients"),
-                            actionButton("surpriseMeButton", "Surprise Me", icon = icon("random"))
+                            actionButton("surpriseMeButton", "Surprise Me", icon = icon("random")),
+                            radioButtons("radio_units", "Measurement Units",
+                                         c("International" = "int",
+                                           "Imperial" = "imp")
+                            )
                           ),
                           mainPanel(
                             uiOutput("cocktailList")
@@ -110,19 +114,19 @@ cocktailApp <- function(){
           observeEvent(input[[paste("cocktail_click", local_i, sep = "_")]], {
             selected_cocktail(filtered_data()[local_i, ])
             updateNavbarPage(session, "navbar", selected = "Cocktail Details")
-            showdetails(TRUE)
+            #showdetails(TRUE)
           })
         })
       }
     })
 
-    showdetails <- reactiveVal(NULL)
-    #Function to reset cocktail details content
-    observeEvent(input$navbar, {
-      if (input$navbar == "Cocktail List") {
-        showdetails(NULL)
-      }
-    })
+    # showdetails <- reactiveVal(NULL)
+    # #Function to reset cocktail details content
+    # observeEvent(input$navbar, {
+    #   if (input$navbar == "Cocktail List") {
+    #     showdetails(NULL)
+    #   }
+    # })
     # observeEvent(input$navbar, {
     #   if (input$navbar == "Cocktail Details") {
     #     showdetails(10L)
@@ -130,9 +134,9 @@ cocktailApp <- function(){
     # })
     #second output
     output$cocktailDetails <- renderUI({
-      if (is.null(showdetails())) {
-        p("Click on a cocktail in the Cocktails List tab to see the details")
-      } else {
+      # if (is.null(showdetails())) {
+      #   p("Click on a cocktail in the Cocktails List tab to see the details")
+      # } else {
         #selecting cocktail which the user clicked on
         cocktail <- selected_cocktail()
         if (is.null(cocktail) || nrow(cocktail) == 0) return(NULL)
@@ -146,15 +150,15 @@ cocktailApp <- function(){
 
         #arrange elements in layout
         tagList(title, image, category, ingredients_table_html, recipe)
-      }
+      # }
     })
     #rendering ingredient-quantity table
     output$ingredientsTable <- renderTable({
       #setting cocktail variable
-      cocktail <- selected_cocktail()
-      cocktail_name <- cocktail$Name
+      df <- selected_cocktail()
+      cocktail_name <- df$Name
       #calling package function to render table
-      render_ing_table(cocktail_name)
+      render_ing_table(df, cocktail_name)
     })
 
 
@@ -165,7 +169,13 @@ cocktailApp <- function(){
     renderSideIngredientUI(input, output)
 
     filtered_data <- reactive({
-      filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
+      df <- filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
+      if(input$radio_units == "int"){
+        df <- convertUnits(df, "imperial_to_international")
+      }else if(input$radio_units == "imp"){
+        df <- convertUnits(df, "international_to_imperial")
+      }
+      df
     })
 
     addSurpriseMeObserver(input, output, session, cocktails, selected_cocktail)

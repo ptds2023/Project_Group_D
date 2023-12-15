@@ -28,7 +28,7 @@ convertUnits <- function(data, conversion_direction, min_decimals = -1) {
     for (i in 1:nrow(data)) {
       for (j in 1:ncol(data)) {
         if (!is.na(data[i, j])) {
-          parts <- str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
+          parts <- stringr::str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
           if (!is.null(parts) && length(parts) == 3 && parts[3] %in% imperial_units) {
             value <- as.numeric(parts[2])
             unit <- parts[3]
@@ -63,7 +63,7 @@ convertUnits <- function(data, conversion_direction, min_decimals = -1) {
     for (i in 1:nrow(data)) {
       for (j in 1:ncol(data)) {
         if (!is.na(data[i, j])) {
-          parts <- str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
+          parts <- stringr::str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
           if (!is.null(parts) && length(parts) == 3 && parts[3] %in% international_units) {
             value <- as.numeric(parts[2])
             unit <- parts[3]
