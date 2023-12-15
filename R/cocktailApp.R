@@ -3,13 +3,18 @@
 #' @return Opens shiny app
 #' @import shiny
 #' @import htmltools
+#' @import shinythemes
 #' @importFrom magrittr %>%
 #' @export
+library(shiny)
+library(htmltools)
+library(magrittr)
+library(shinythemes)
 cocktailApp <- function(){
   # Define UI
   ui <- fluidPage(
+    theme = shinythemes::shinytheme("superhero"),
     titlePanel("Cocktail Explorer"),
-
     navbarPage("Cocktails", id = "navbar",
                tabPanel("Cocktail List",
                         sidebarLayout(
@@ -75,11 +80,14 @@ cocktailApp <- function(){
       if(nrow(sub_data) == 0){
         HTML("<p>No cocktail found</p>")
       }else{
-        # Create a list of clickable cocktail names with pictures
+        # Create a list of clickable cocktail names with pictures, arranged side by side
         cocktailList <- lapply(1:nrow(sub_data), function(i) {
           wellPanel(
-            actionLink(inputId = paste("cocktail_click", i, sep = "_"), label = sub_data$Name[i]),
-            img(src = sub_data$Picture[i], height = "200px")
+            fluidRow(
+              column(6, div(style = "display: flex; align-items: center; height: 200px;",
+                            actionLink(inputId = paste("cocktail_click", i, sep = "_"), label = sub_data$Name[i]))),
+              column(6, img(src = sub_data$Picture[i], height = "200px"))
+            )
           )
         })
         do.call(tagList, cocktailList)
