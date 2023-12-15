@@ -14,7 +14,8 @@ knitr::opts_chunk$set(echo = TRUE)
 In this code we will create a function for transforming the units of the ingredients from imperial to international system. This will be incorporated as a function for the R package afterwards. The methodology for making the conversion is the following: We will upload the data, look at the information that contains the measurements. If the unit contains imperial units (for example ounces - oz) we will convert them to a practical unit in the international system (for example ml).
 
 ```{r}
-df <- readRDS("drinks.rds")
+#df <- readRDS("drinks.rds")
+df <- cocktails
 ```
 
 We start by separating the string that contains the information for the measurements between number and unit. We intend to see how many different units we would need to pass from imperial to international.
@@ -141,7 +142,7 @@ print(df)
 Now we made proceed with the conversion of units. We create a function that receives the system. If it is international, all the measurements shown in imperial are changed to international. If it is imperial, an analogue procedure is taken.
 
 ```{r}
-convertUnits <- function(data, conversion_direction, min_decimals = 1) {
+convertUnits <- function(data, conversion_direction, min_decimals = -1) {
   # Define conversion factors
   imperial_to_international <- c(29.5735, 1000, 946.353, 473.176, 0.453592, 0.946353, 2.54)
   international_to_imperial <- c(0.033814, 0.001, 0.00105669, 0.00211338, 2.20462, 1.05669, 0.393701)
@@ -161,7 +162,7 @@ convertUnits <- function(data, conversion_direction, min_decimals = 1) {
             unit <- parts[3]
             if (unit %in% c("oz", "gal", "qt", "pint", "quart")) {
               # Convert volume to ml
-              converted_value <- value * imperial_to_international[which(imperial_units == "oz")]
+              converted_value <- value * imperial_to_international[which(imperial_units == unit)]
               new_unit <- "ml"
             } else if (unit %in% c("lb")) {
               # Convert mass to kg
@@ -178,7 +179,7 @@ convertUnits <- function(data, conversion_direction, min_decimals = 1) {
             }
             
             # Round the converted value to the specified number of decimals
-            rounded_value <- signif(converted_value, min_decimals)
+            rounded_value <- round(converted_value, min_decimals)
             
             # Update the dataset
             data[i, j] <- paste(rounded_value, new_unit)
@@ -196,11 +197,11 @@ convertUnits <- function(data, conversion_direction, min_decimals = 1) {
             unit <- parts[3]
             if (unit %in% c("cl", "ml", "dl", "l")) {
               # Convert volume to oz
-              converted_value <- value * international_to_imperial[which(international_units == "ml")]
+              converted_value <- value * international_to_imperial[which(international_units == unit)]
               new_unit <- "oz"
             } else if (unit %in% c("gr", "kg")) {
               # Convert mass to lb
-              converted_value <- value * international_to_imperial[which(international_units == "kg")]
+              converted_value <- value * international_to_imperial[which(international_units == unit)]
               new_unit <- "lb"
             } else if (unit %in% c("cm")) {
               # Convert distance to inch
@@ -213,7 +214,7 @@ convertUnits <- function(data, conversion_direction, min_decimals = 1) {
             }
             
             # Round the converted value to the specified number of decimals
-            rounded_value <- signif(converted_value, min_decimals)
+            rounded_value <- round(converted_value, min_decimals)
             
             # Update the dataset
             data[i, j] <- paste(rounded_value, new_unit)
@@ -230,7 +231,7 @@ convertUnits <- function(data, conversion_direction, min_decimals = 1) {
 }
 
 # Apply function imperial to international
-df_imperial_to_international <- convertUnits(df, "imperial_to_international", min_decimals = 1)
+df_imperial_to_international <- convertUnits(df, "imperial_to_international")
 
 # Apply functioninternational to imperial
 df_international_to_imperial <- convertUnits(df, "international_to_imperial", min_decimals = 1)

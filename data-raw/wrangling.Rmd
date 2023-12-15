@@ -230,7 +230,7 @@ unique_ing_vec <- setdiff(all_cols, categorical_vars)
 
 alcohol_vec <- c("151 bacardi rum", "absinthe", "absolut citron", "absolut kurant", "absolut peppar", "absolut vodka", "advocaat", "ale", "amaretto", "anisette", "aperol", "apfelkorn", "apple brandy", "apple cider", "apple schnapps", "applejack", "apricot brandy", "aquavit", "añejo rum", "bacardi limon", "baileys irish cream", "banana liqueur", "beer", "benedictine", "black sambuca", "blackberry brandy", "blended whiskey", "blue curacao", "blueberry schnapps", "bourbon", "brandy", "butterscotch schnapps", "cachaca", "campari", "chambord raspberry liqueur", "champagne", "cherry brandy", "cherry heering", "cherry liqueur","chocolate liqueur", "cider", "coconut liqueur", "coconut rum", "coffee brandy", "coffee liqueur", "cognac", "cointreau", "corona", "cranberry vodka", "cream of coconut", "creme de banane", "creme de cacao", "creme de cassis", "creme de mure", "crown royal", "curacao", "dark creme de cacao", "dark rum","drambuie", "dry vermouth", "dubonnet rouge", "erin cream", "everclear", "firewater", "frangelico", "galliano", "gin", "godiva liqueur", "gold tequila", "goldschlager", "grain alcohol", "grand marnier", "green chartreuse", "green creme de menthe", "guinness stout", "hot damn", "irish cream", "irish whiskey", "jack daniels", "jim beam", "johnnie walker", "jägermeister", "kahlua", "kirschwasser", "kiwi liqueur", "lager", "lemon vodka", "light rum", "lillet blanc", "lime vodka", "malibu rum", "maraschino liqueur", "melon liqueur", "midori melon liqueur", "orange curacao", "ouzo", "peach brandy", "peach schnapps", "peach vodka", "peppermint schnapps", "peychaud bitters", "pisang ambon", "pisco", "port", "prosecco", "raspberry liqueur", "raspberry vodka", "red wine", "ricard", "rum", "rumple minze", "rye whiskey", "sambuca", "scotch", "sherry", "sloe gin", "southern comfort", "spiced rum", "st. germain", "strawberry liqueur", "strawberry schnapps", "sweet vermouth", "tennessee whiskey", "tequila", "tia maria", "triple sec", "vanilla vodka", "vermouth", "vodka", "whiskey", "white creme de menthe", "white rum", "wild turkey", "wine", "yellow chartreuse", "yukon jack")
 
-side_ing_vec <- setdiff(unique_ing, alcohol_vec)
+side_ing_vec <- setdiff(unique_ing_vec, alcohol_vec)
 ```
 
 We have 8 cocktails that are marked as alcoholic but don't contain alcohol in the vector
@@ -268,15 +268,139 @@ cocktails <- cocktails %>%
 
 #removing additional 7 cocktails which contain 0 ingredients
 cocktails <- cocktails %>% 
-  mutate(sums = rowSums(!is.na(.[, unique_ing]))) %>%
+  mutate(sums = rowSums(!is.na(.[, unique_ing_vec]))) %>%
   filter(sums != 0) %>% 
   select(-sums)
+```
+
+# Conversion function
+In this code we will create a function for transforming the units of the ingredients from imperial to international system. This will be incorporated as a function for the R package afterwards. The methodology for making the conversion is the following: We will upload the data, look at the information that contains the measurements. If the unit contains imperial units (for example ounces - oz) we will convert them to a practical unit in the international system (for example ml).
+
+We start by separating the string that contains the information for the measurements between number and unit. We intend to see how many different units we would need to pass from imperial to international.
+
+```{r}
+# Assuming your dataframe is named df
+library(stringr)
+
+# Specify the range of columns
+measure_cols <- cocktails[, 7:310]
+
+# Extract unique measurement units from all cells in the specified range
+unique_units <- unique(unlist(apply(measure_cols, c(1, 2), function(x) {
+  units <- str_extract(x, "[a-zA-Z]+")
+  units[!is.na(units)]  # Remove NAs
+})))
+
+```
+
+```{r}
+# Print the unique measurement units
+print(unique_units)
+```
+
+```{r}
+imperial<- c("oz", "gal", "qt","pint", "lb", "quart","inch")
+international <- c("cl","ml","dl","l","gr","kg")
+```
+
+The logical step would be making the conversion only for those units in imperial or international. While analyzing the data we realized that the numbers are not prepared for working in a conversion of units. the main issue is the following: we have high heterogeneity in the way in which numbers are presented. The following are the main options that have been spotted as examples: (1) 1 oz; (2) 1.5 lb; (3) 1/4 kg; (4) 1 1/2 spoon; (5) 1-2 dash. We need to create one single format to show the numbers, preferably as decimal or whole numbers, and not in fractional notation or as a range. For this purpose we implement the following function for homogenizing the numbers:
+
+```{r}
+correctFractions <- function(data, decimals = 1) {
+  # Iterate over the rows and columns of the dataset
+  for (i in 1:nrow(data)) {
+    for (j in 1:ncol(data)) {
+      # Check if the value follows the specified pattern for integers plus fraction
+      integerPattern <- "([0-9]+) ([0-9]+)/([0-9]+)"
+      if (!is.na(data[i, j]) && grepl(integerPattern, data[i, j])) {
+        # Extract parts of the value
+        parts <- str_match(data[i, j], integerPattern)
+        integerPart <- as.numeric(parts[2])
+        numerator <- as.numeric(parts[3])
+        denominator <- as.numeric(parts[4])
+        
+        # Calculate the sum
+        sumValue <- integerPart + numerator/denominator
+        
+        # Round the value to the specified number of decimals
+        roundedSum <- round(sumValue, decimals)
+        
+        # Create the new value without repeating the unit
+        new_value <- paste(roundedSum, gsub("\\d+ \\d+/\\d+ (.+)", "\\1", data[i, j]))
+        
+        # Update the dataset
+        data[i, j] <- new_value
+      } else {
+        # Check if the value follows the specified pattern for fractions
+        fractionPattern <- "([0-9]+)/([0-9]+)"
+        if (!is.na(data[i, j]) && grepl(fractionPattern, data[i, j])) {
+          # Extract parts of the value
+          parts <- str_match(data[i, j], fractionPattern)
+          numerator <- as.numeric(parts[2])
+          denominator <- as.numeric(parts[3])
+          
+          # Calculate the decimal value
+          decimalValue <- numerator/denominator
+          
+          # Round the value to the specified number of decimals
+          roundedValue <- round(decimalValue, decimals)
+          
+          # Create the new value
+          new_value <- paste(roundedValue, gsub("\\d+/\\d+ (.+)", "\\1", data[i, j]))
+          
+          # Update the dataset
+          data[i, j] <- new_value
+        } else {
+          # Check if the value follows the specified pattern for "number-dash-number"
+          dashPattern <- "([0-9]+)-([0-9]+)"
+          if (!is.na(data[i, j]) && grepl(dashPattern, data[i, j])) {
+            # Extract the part after the dash
+            parts <- str_match(data[i, j], dashPattern)
+            afterDash <- parts[3]
+            
+            # Create the new value
+            new_value <- paste(afterDash, gsub("\\d+-\\d+ (.+)", "\\1", data[i, j]))
+            
+            # Update the dataset
+            data[i, j] <- new_value
+          }
+        }
+      }
+    }
+  }
+  
+  # Remove any values of the type "space-number-slash-number"
+  data <- data.frame(lapply(data, function(x) gsub("\\s\\d+/\\d+", "", x, perl = TRUE)))
+  
+  # Clean column names and remove trailing whitespaces
+  colnames(data) <- gsub("\\.$", "", gsub("\\.", " ", colnames(data)))
+  colnames(data) <- gsub("\\s+$", "", colnames(data))
+  
+  # Print the final version of the dataset
+  return(data)
+}
+
+# Example usage:
+# df <- correctFractions(df, decimals = 1)
+
+
+# Function to clean column names (in case the inside function does not work in R package)
+# clean_column_names <- function(df) {
+#   colnames(df) <- gsub("\\.$", "", gsub("\\.", " ", colnames(df)))
+#   return(df)
+# }
+
+# Apply the function to the data frame
+cocktails <- correctFractions(cocktails, decimals = 2)
+
+# Print the cleaned data frame
+print(cocktails)
 ```
 
 #Creating rda files
 ```{r eval=FALSE}
 usethis::use_data(cocktails, overwrite = TRUE)
-usethis::use_data(unique_ing, alcohol_vec, side_ing_vec, internal = TRUE)
+usethis::use_data(unique_ing_vec, alcohol_vec, side_ing_vec, internal = TRUE, overwrite = TRUE)
 # usethis::use_data(unique_ing_vec)
 # usethis::use_data(alcohol_vec, overwrite = TRUE)
 # usethis::use_data(side_ing_vec)

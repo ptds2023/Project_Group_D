@@ -1,0 +1,103 @@
+#' Measurement Units Conversion (volume, weight and length)
+#'
+#' The `convertUnits` function is used to convert imperial units to international, and vice versa.
+#' It takes as input a data frame which contains values and units in volume, weight and height,
+#' and converts those units to the desired system. It can be used in conjunction to the
+#' `convertFractions` function.
+#' @param data A dataframe
+#' @param conversion_direction A string to define conversion direction
+#'    (imperial_to_international or international_to_imperial)
+#' @param min_decimals The number of decimals of converted numbers
+#'
+#' @return A new dataframe with either imperial or international units
+#' @export
+#'
+#' @examples
+#' convertUnits(cocktails, "imperial_to_international")
+convertUnits <- function(data, conversion_direction, min_decimals = -1) {
+  # Define conversion factors
+  imperial_to_international <- c(29.5735, 1000, 946.353, 473.176, 0.453592, 0.946353, 2.54)
+  international_to_imperial <- c(0.033814, 0.001, 0.00105669, 0.00211338, 2.20462, 1.05669, 0.393701)
+
+  # Define units for conversion
+  imperial_units <- c("oz", "gal", "qt", "pint", "lb", "quart", "inch")
+  international_units <- c("cl", "ml", "dl", "l", "gr", "kg", "cm")
+
+  # Perform conversion based on the specified direction
+  if (conversion_direction == "imperial_to_international") {
+    for (i in 1:nrow(data)) {
+      for (j in 1:ncol(data)) {
+        if (!is.na(data[i, j])) {
+          parts <- str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
+          if (!is.null(parts) && length(parts) == 3 && parts[3] %in% imperial_units) {
+            value <- as.numeric(parts[2])
+            unit <- parts[3]
+            if (unit %in% c("oz", "gal", "qt", "pint", "quart")) {
+              # Convert volume to ml
+              converted_value <- value * imperial_to_international[which(imperial_units == unit)]
+              new_unit <- "ml"
+            } else if (unit %in% c("lb")) {
+              # Convert mass to kg
+              converted_value <- value * imperial_to_international[which(imperial_units == "lb")]
+              new_unit <- "kg"
+            } else if (unit %in% c("inch")) {
+              # Convert distance to cm
+              converted_value <- value * imperial_to_international[which(imperial_units == "inch")]
+              new_unit <- "cm"
+            } else {
+              # Keep the original value if not in the specified units
+              converted_value <- value
+              new_unit <- unit
+            }
+
+            # Round the converted value to the specified number of decimals
+            rounded_value <- round(converted_value, min_decimals)
+
+            # Update the dataset
+            data[i, j] <- paste(rounded_value, new_unit)
+          }
+        }
+      }
+    }
+  } else if (conversion_direction == "international_to_imperial") {
+    for (i in 1:nrow(data)) {
+      for (j in 1:ncol(data)) {
+        if (!is.na(data[i, j])) {
+          parts <- str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
+          if (!is.null(parts) && length(parts) == 3 && parts[3] %in% international_units) {
+            value <- as.numeric(parts[2])
+            unit <- parts[3]
+            if (unit %in% c("cl", "ml", "dl", "l")) {
+              # Convert volume to oz
+              converted_value <- value * international_to_imperial[which(international_units == unit)]
+              new_unit <- "oz"
+            } else if (unit %in% c("gr", "kg")) {
+              # Convert mass to lb
+              converted_value <- value * international_to_imperial[which(international_units == unit)]
+              new_unit <- "lb"
+            } else if (unit %in% c("cm")) {
+              # Convert distance to inch
+              converted_value <- value * international_to_imperial[which(international_units == "cm")]
+              new_unit <- "inch"
+            } else {
+              # Keep the original value if not in the specified units
+              converted_value <- value
+              new_unit <- unit
+            }
+
+            # Round the converted value to the specified number of decimals
+            rounded_value <- round(converted_value, min_decimals)
+
+            # Update the dataset
+            data[i, j] <- paste(rounded_value, new_unit)
+          }
+        }
+      }
+    }
+  } else {
+    stop("Invalid conversion direction. Please specify 'imperial_to_international' or 'international_to_imperial'.")
+  }
+
+  # Print the final version of the dataset
+  return(data)
+}
