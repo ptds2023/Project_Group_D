@@ -3,6 +3,7 @@
 export(cocktailApp)
 export(filtering_fun)
 export(render_ing_table)
+import(htmltools)
 import(shiny)
 importFrom(magrittr,"%>%")
 importFrom(rlang,.data)
