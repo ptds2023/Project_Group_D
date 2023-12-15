@@ -1,7 +1,7 @@
 Package: CocktailSelector
 Type: Package
 Title: Cocktail Recommendation & Ingredients
-Version: 0.1.0
+Version: 1.0
 Authors@R:
     person("Nathan", "", email = "@unil.ch", role = c("aut", "cre"))
     person("Tiffany", "Davies", email = "", role = c("aut", "cre"))
@@ -24,4 +24,4 @@ Imports:
     rlang
 RoxygenNote: 7.2.3
 Depends: 
-    R (>= 2.10)
+    R (>= 3.5.0)
