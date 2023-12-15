@@ -166,3 +166,18 @@ cocktails <- cocktails %>%
   select(-sums)
 ```
 
+```{r}
+df_imperial_to_international %>% 
+  dplyr::filter(Name == "snake bite (uk)")
+
+df %>% 
+  filtered_cocktails
+
+filtered_df <- df[apply(df, 1, function(row) any(grepl("pint", row))), ]
+
+cocktails %>% 
+  filter(Name == "a1")
+
+parts <- str_match("1.75 shot", "([0-9.]+)\\s*([a-zA-Z]+)")
+```
+
