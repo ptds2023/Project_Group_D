@@ -195,7 +195,7 @@ colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strCategory"] 
 colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strDrinkThumb"] <- "Picture"
 colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strGlass"] <- "Glass"
 colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strInstructions"] <- "Recipe"
-colnames(drinks_data_combined)[colnames(drinks_data_combined) == "151 proof rum "] <- "151 bacardi rum"
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "151 proof rum "] <- "bacardi rum"
 ```
 
 Eliminate the inconsistencies found in the dataset, on the section of the measurements.
@@ -228,7 +228,7 @@ categorical_vars <- c("Name", "Type", "Category", "Picture", "Glass", "Recipe")
 
 unique_ing_vec <- setdiff(all_cols, categorical_vars)
 
-alcohol_vec <- c("151 bacardi rum", "absinthe", "absolut citron", "absolut kurant", "absolut peppar", "absolut vodka", "advocaat", "ale", "amaretto", "anisette", "aperol", "apfelkorn", "apple brandy", "apple cider", "apple schnapps", "applejack", "apricot brandy", "aquavit", "añejo rum", "bacardi limon", "baileys irish cream", "banana liqueur", "beer", "benedictine", "black sambuca", "blackberry brandy", "blended whiskey", "blue curacao", "blueberry schnapps", "bourbon", "brandy", "butterscotch schnapps", "cachaca", "campari", "chambord raspberry liqueur", "champagne", "cherry brandy", "cherry heering", "cherry liqueur","chocolate liqueur", "cider", "coconut liqueur", "coconut rum", "coffee brandy", "coffee liqueur", "cognac", "cointreau", "corona", "cranberry vodka", "cream of coconut", "creme de banane", "creme de cacao", "creme de cassis", "creme de mure", "crown royal", "curacao", "dark creme de cacao", "dark rum","drambuie", "dry vermouth", "dubonnet rouge", "erin cream", "everclear", "firewater", "frangelico", "galliano", "gin", "godiva liqueur", "gold tequila", "goldschlager", "grain alcohol", "grand marnier", "green chartreuse", "green creme de menthe", "guinness stout", "hot damn", "irish cream", "irish whiskey", "jack daniels", "jim beam", "johnnie walker", "jägermeister", "kahlua", "kirschwasser", "kiwi liqueur", "lager", "lemon vodka", "light rum", "lillet blanc", "lime vodka", "malibu rum", "maraschino liqueur", "melon liqueur", "midori melon liqueur", "orange curacao", "ouzo", "peach brandy", "peach schnapps", "peach vodka", "peppermint schnapps", "peychaud bitters", "pisang ambon", "pisco", "port", "prosecco", "raspberry liqueur", "raspberry vodka", "red wine", "ricard", "rum", "rumple minze", "rye whiskey", "sambuca", "scotch", "sherry", "sloe gin", "southern comfort", "spiced rum", "st. germain", "strawberry liqueur", "strawberry schnapps", "sweet vermouth", "tennessee whiskey", "tequila", "tia maria", "triple sec", "vanilla vodka", "vermouth", "vodka", "whiskey", "white creme de menthe", "white rum", "wild turkey", "wine", "yellow chartreuse", "yukon jack")
+alcohol_vec <- c("bacardi rum", "absinthe", "absolut citron", "absolut kurant", "absolut peppar", "absolut vodka", "advocaat", "ale", "amaretto", "anisette", "aperol", "apfelkorn", "apple brandy", "apple cider", "apple schnapps", "applejack", "apricot brandy", "aquavit", "añejo rum", "bacardi limon", "baileys irish cream", "banana liqueur", "beer", "benedictine", "black sambuca", "blackberry brandy", "blended whiskey", "blue curacao", "blueberry schnapps", "bourbon", "brandy", "butterscotch schnapps", "cachaca", "campari", "chambord raspberry liqueur", "champagne", "cherry brandy", "cherry heering", "cherry liqueur","chocolate liqueur", "cider", "coconut liqueur", "coconut rum", "coffee brandy", "coffee liqueur", "cognac", "cointreau", "corona", "cranberry vodka", "cream of coconut", "creme de banane", "creme de cacao", "creme de cassis", "creme de mure", "crown royal", "curacao", "dark creme de cacao", "dark rum","drambuie", "dry vermouth", "dubonnet rouge", "erin cream", "everclear", "firewater", "frangelico", "galliano", "gin", "godiva liqueur", "gold tequila", "goldschlager", "grain alcohol", "grand marnier", "green chartreuse", "green creme de menthe", "guinness stout", "hot damn", "irish cream", "irish whiskey", "jack daniels", "jim beam", "johnnie walker", "jägermeister", "kahlua", "kirschwasser", "kiwi liqueur", "lager", "lemon vodka", "light rum", "lillet blanc", "lime vodka", "malibu rum", "maraschino liqueur", "melon liqueur", "midori melon liqueur", "orange curacao", "ouzo", "peach brandy", "peach schnapps", "peach vodka", "peppermint schnapps", "peychaud bitters", "pisang ambon", "pisco", "port", "prosecco", "raspberry liqueur", "raspberry vodka", "red wine", "ricard", "rum", "rumple minze", "rye whiskey", "sambuca", "scotch", "sherry", "sloe gin", "southern comfort", "spiced rum", "st. germain", "strawberry liqueur", "strawberry schnapps", "sweet vermouth", "tennessee whiskey", "tequila", "tia maria", "triple sec", "vanilla vodka", "vermouth", "vodka", "whiskey", "white creme de menthe", "white rum", "wild turkey", "wine", "yellow chartreuse", "yukon jack")
 
 side_ing_vec <- setdiff(unique_ing_vec, alcohol_vec)
 ```
@@ -399,8 +399,8 @@ print(cocktails)
 
 #Creating rda files
 ```{r eval=FALSE}
-usethis::use_data(cocktails, overwrite = TRUE)
-usethis::use_data(unique_ing_vec, alcohol_vec, side_ing_vec, internal = TRUE, overwrite = TRUE)
+#usethis::use_data(cocktails, overwrite = TRUE)
+#usethis::use_data(unique_ing_vec, alcohol_vec, side_ing_vec, internal = TRUE, overwrite = TRUE)
 # usethis::use_data(unique_ing_vec)
 # usethis::use_data(alcohol_vec, overwrite = TRUE)
 # usethis::use_data(side_ing_vec)
