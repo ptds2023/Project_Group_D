@@ -10,5 +10,5 @@ cocktailApp()
 Opens shiny app
 }
 \description{
-Shiny app function
+The `cocktailApp` function launches the shiny app directly from the package.
 }

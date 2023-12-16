@@ -1,15 +1,12 @@
 #' Shiny app function
 #'
+#' The `cocktailApp` function launches the shiny app directly from the package.
 #' @return Opens shiny app
 #' @import shiny
 #' @import htmltools
 #' @import shinythemes
 #' @importFrom magrittr %>%
 #' @export
-library(shiny)
-library(htmltools)
-library(magrittr)
-library(shinythemes)
 cocktailApp <- function(){
   # Define UI
   ui <- fluidPage(

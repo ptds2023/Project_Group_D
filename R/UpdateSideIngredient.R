@@ -1,3 +1,13 @@
+#' Update side ingredients content
+#'
+#' This function dynamically updates the content inside the side ingredient dropdowns
+#' based on what alcohol was selected. It also prevents that a user can choose the
+#' same side ingredient twice.
+#' @param input Shiny input vector
+#' @param session Shiny output vector
+#' @param cocktails Cocktails dataframe
+#'
+#' @return Updated dropdown menus
 updateSideIngredients <- function(input, session, cocktails) {
   observeEvent(input$ingredient1, {
     if (input$ingredient1 != "" && input$ingredient1 != "Choose") {

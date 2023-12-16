@@ -1,13 +1,16 @@
 #' Render Ingredient-Quantity Table
 #'
+#' The render_ing_table function takes as input the cocktails dataframe and the
+#' name of a cocktail in that dataframe and returns its ingredients along with quantities.
 #' @param selected_cocktail A cocktail name string
+#' @param df The cocktails dataframe
 #'
 #' @return An html table with ingredients and corresponding quantities
 #' @importFrom rlang .data
 #' @export
 #'
 #' @examples
-#' render_ing_table("daiquiri")
+#' render_ing_table(cocktails, "daiquiri")
 render_ing_table <- function(df, selected_cocktail){
   ing_table <- df %>%
     dplyr::filter(.data$Name == selected_cocktail) %>%

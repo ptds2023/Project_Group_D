@@ -1,3 +1,10 @@
+#' Dropdown rendering
+#'
+#' This functions dynamically renders the dropdown menus in the Shiny app UI
+#' @param input Shiny input
+#' @param output Shiny output
+#'
+#' @return Dynamically created dropdown menus
 renderSideIngredientUI <- function(input, output) {
   output$sideIngredient1Dropdown <- renderUI({
     if (!is.na(input$ingredient1) && input$ingredient1 != "" && input$ingredient1 != "Choose") {

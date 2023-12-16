@@ -1,5 +1,10 @@
 #' Filtering for cocktails list
 #'
+#' The `filtering_fun` function is used to create the list of
+#' drinks based on inputs from the dropdowns.
+#' It filters the datasets based on on alcohol and two side ingredients
+#' an returns a filtered dataframe with drink correspinding to those critieria.
+#'
 #' @param df A dataframe
 #' @param alcohol A string
 #' @param ing1 A string

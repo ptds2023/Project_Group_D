@@ -4,17 +4,20 @@
 \alias{render_ing_table}
 \title{Render Ingredient-Quantity Table}
 \usage{
-render_ing_table(selected_cocktail)
+render_ing_table(df, selected_cocktail)
 }
 \arguments{
+\item{df}{The cocktails dataframe}
+
 \item{selected_cocktail}{A cocktail name string}
 }
 \value{
 An html table with ingredients and corresponding quantities
 }
 \description{
-Render Ingredient-Quantity Table
+The render_ing_table function takes as input the cocktails dataframe and the
+name of a cocktail in that dataframe and returns its ingredients along with quantities.
 }
 \examples{
-render_ing_table("daiquiri")
+render_ing_table(cocktails, "daiquiri")
 }
