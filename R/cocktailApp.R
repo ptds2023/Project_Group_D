@@ -51,14 +51,7 @@ cocktailApp <- function(){
                           p("Enjoy exploring and discovering new cocktails!")
                         )
                )
-    ),
-    tags$script(HTML('
-    $(document).on("shown.bs.tab", \'a[data-toggle="tab"]\', function (e) {
-      if ($(e.target).attr("href") === "#cocktailList") {
-        $("#cocktailDetails").empty();
-      }
-    });
-  '))
+    )
   )
 
 
@@ -80,6 +73,9 @@ cocktailApp <- function(){
       welcome_message()
     })
 
+    filtered_data <- reactive({
+      filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
+    })
     #first output
     output$cocktailList <- renderUI({
       # Get the filtered data
@@ -117,6 +113,7 @@ cocktailApp <- function(){
       }
     })
 
+
     # showdetails <- reactiveVal(NULL)
     # #Function to reset cocktail details content
     # observeEvent(input$navbar, {
@@ -135,9 +132,15 @@ cocktailApp <- function(){
       #   p("Click on a cocktail in the Cocktails List tab to see the details")
       # } else {
         #selecting cocktail which the user clicked on
+        # cocktail <- selected_cocktail()
+        df <- selected_cocktail()
+        if(input$radio_units == "int"){
+          selected_cocktail(convertUnits(df, "imperial_to_international"))
+        }else if(input$radio_units == "imp"){
+          selected_cocktail(convertUnits(df, "international_to_imperial"))
+        }
         cocktail <- selected_cocktail()
         if (is.null(cocktail) || nrow(cocktail) == 0) return(NULL)
-
         #creating multiple elements to display
         title <- h2(cocktail$Name)
         image <- tags$img(src = cocktail$Picture, height = "200px")
@@ -165,15 +168,6 @@ cocktailApp <- function(){
     # Call the function to render dynamic UI
     renderSideIngredientUI(input, output)
 
-    filtered_data <- reactive({
-      df <- filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
-      if(input$radio_units == "int"){
-        df <- convertUnits(df, "imperial_to_international")
-      }else if(input$radio_units == "imp"){
-        df <- convertUnits(df, "international_to_imperial")
-      }
-      df
-    })
 
     addSurpriseMeObserver(input, output, session, cocktails, selected_cocktail)
 
