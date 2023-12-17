@@ -13,11 +13,17 @@ knitr::opts_chunk$set(echo = TRUE)
 library(here)
 library(readr)
 library(dplyr)
-library(dplyr)
+library(visdat)
+library(ggplot2)
 ```
 
 ```{r}
 drinks_data <- read_csv(here::here("data/all_drinks.csv"))
+```
+
+```{r}
+# View the modified data frame
+vis_dat(drinks_data,warn_large_data = FALSE) + scale_fill_brewer(palette="Paired")
 ```
 
 We will start by checking the unique values contained in the columns that describe the ingredients
@@ -224,4 +230,3 @@ saveRDS(drinks_data_combined, file = "drinks.rds")
 ```{r}
 df <- readRDS("drinks.rds")
 ```
-
