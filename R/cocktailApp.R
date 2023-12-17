@@ -100,20 +100,25 @@ cocktailApp <- function(){
     })
 
     selected_cocktail <- reactiveVal(NULL)
+    show_details <- reactiveVal(FALSE)
+
     observe({
       for (i in 1:nrow(filtered_data())) {
         local({
           local_i <- i
           observeEvent(input[[paste("cocktail_click", local_i, sep = "_")]], {
             selected_cocktail(filtered_data()[local_i, ])
+            if(input$radio_units == "int"){
+              selected_cocktail(convertUnits(selected_cocktail(), "imperial_to_international"))
+            }else if(input$radio_units == "imp"){
+              selected_cocktail(convertUnits(selected_cocktail(), "international_to_imperial"))
+            }
+            show_details(TRUE)
             updateNavbarPage(session, "navbar", selected = "Cocktail Details")
-            #showdetails(TRUE)
           })
         })
       }
     })
-
-
     # showdetails <- reactiveVal(NULL)
     # #Function to reset cocktail details content
     # observeEvent(input$navbar, {
@@ -132,24 +137,18 @@ cocktailApp <- function(){
       #   p("Click on a cocktail in the Cocktails List tab to see the details")
       # } else {
         #selecting cocktail which the user clicked on
-        # cocktail <- selected_cocktail()
-        df <- selected_cocktail()
-        if(input$radio_units == "int"){
-          selected_cocktail(convertUnits(df, "imperial_to_international"))
-        }else if(input$radio_units == "imp"){
-          selected_cocktail(convertUnits(df, "international_to_imperial"))
-        }
-        cocktail <- selected_cocktail()
-        if (is.null(cocktail) || nrow(cocktail) == 0) return(NULL)
-        #creating multiple elements to display
-        title <- h2(cocktail$Name)
-        image <- tags$img(src = cocktail$Picture, height = "200px")
-        category <- h3(paste("Category:", cocktail$Category))
-        recipe <- h4("Recipe: ", cocktail$Recipe)
-        ingredients_table_html <- tableOutput("ingredientsTable")
+      if (!show_details()) return(NULL)
+      cocktail <- selected_cocktail()
+      if (is.null(cocktail) || nrow(cocktail) == 0) return(NULL)
+      #creating multiple elements to display
+      title <- h2(cocktail$Name)
+      image <- tags$img(src = cocktail$Picture, height = "200px")
+      category <- h3(paste("Category:", cocktail$Category))
+      recipe <- h4("Recipe: ", cocktail$Recipe)
+      ingredients_table_html <- tableOutput("ingredientsTable")
 
-        #arrange elements in layout
-        tagList(title, image, category, ingredients_table_html, recipe)
+      #arrange elements in layout
+      tagList(title, image, category, ingredients_table_html, recipe)
       # }
     })
     #rendering ingredient-quantity table
@@ -169,8 +168,23 @@ cocktailApp <- function(){
     renderSideIngredientUI(input, output)
 
 
-    addSurpriseMeObserver(input, output, session, cocktails, selected_cocktail)
+    #addSurpriseMeObserver(input, output, session, cocktails, selected_cocktail)
+    observeEvent(input$surpriseMeButton, {
+      if (nrow(cocktails) > 0) {
+        # Randomly select a cocktail
+        random_cocktail <- cocktails[sample(nrow(cocktails), 1), ]
+        selected_cocktail(random_cocktail)
+        if(input$radio_units == "int"){
+          selected_cocktail(convertUnits(selected_cocktail(), "imperial_to_international"))
+        }else if(input$radio_units == "imp"){
+          selected_cocktail(convertUnits(selected_cocktail(), "international_to_imperial"))
+        }
+        show_details(TRUE)
 
+        # Update the UI to show the cocktail details
+        updateNavbarPage(session, "navbar", selected = "Cocktail Details")
+      }
+    })
     # Clear button logic
     observeEvent(input$clearButton, {
       updateSelectInput(session, "ingredient1", selected = "")
@@ -178,7 +192,12 @@ cocktailApp <- function(){
       updateSelectInput(session, "ingredient3", selected = "")
     })
 
-
+    observeEvent(input$navbar, {
+      if (input$navbar != "Cocktail Details") {
+        show_details(FALSE)
+      }
+    })
+  ### end of server
   }
 
 
