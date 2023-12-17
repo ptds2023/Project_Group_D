@@ -1,6 +1,6 @@
-# Project_Group_D
-
 # Cocktail selector
+
+<img src="man/figures/cocktail.png" width="500"/>
 
 ## Find Your Perfect Mix!
 

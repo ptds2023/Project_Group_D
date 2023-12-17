@@ -11,3 +11,48 @@ vignette: >
 
 This vignette will guide you through the Cocktail Selector package. You'll learn how to install the package, use its main functions, and explore the various features it offers.
 
+# Installation
+
+Install the Cocktail Selector from GitHub using `devtools`:
+
+```{r installation, eval=FALSE}
+# Install devtools if not already installed
+if (!requireNamespace("devtools", quietly = TRUE))
+    install.packages("devtools")
+
+# Install the Cocktail Selector package
+devtools::install_github("ptds2023/Project_Group_D")
+```
+
+# Launching the Shiny App
+
+To start the app, load the package and call the cocktailApp function:
+
+```{r}
+library(CocktailSelector)
+cocktailApp()
+```
+
+# Navigating the App Interface
+
+The app consists of several tabs, each with specific functionality:
+
+- **Cocktail List Tab**:Select an alcohol type and additional ingredients.View a list of cocktails that can be made with the selected ingredients.Clear selections to start over or be surprised with a random cocktail recommendation.
+
+- **Cocktail Details Tab**: Detailed information about the cocktail is displayed here.Users can view the cocktail's recipe, ingredients, and an image.
+
+- **Information Tab** : Instructions on using the app.
+
+# Using the App
+
+Start by choosing a base alcohol from the dropdown.
+Additional ingredient dropdowns will update based on the base alcohol selected.
+
+- **Exploring Recipes**: The app will display cocktail options based on the selected ingredients. Click on any cocktail to view detailed information, such as the recipe and ingredients required.
+
+- **Clearing Selections**: At any point, use the 'Clear Ingredients' button to reset your selections and start over.
+
+- **Surprise Me Feature**: Not sure what you want? Use the 'Surprise Me' feature for a random cocktail selection.
+
+# Functions 
+You can find the different functions in the reference section 

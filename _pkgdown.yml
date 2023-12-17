@@ -1,0 +1,7 @@
+title: CocktailSelector
+description: "An R package and Shiny app designed to help you discover new and exciting cocktail recipes."
+template:
+  bootstrap: 5
+  bootswatch: "minty"
+favicon: man/figures/logo.png
+
