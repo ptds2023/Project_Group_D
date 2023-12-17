@@ -16,9 +16,10 @@
 #' convertUnits(cocktails, "imperial_to_international")
 convertUnits <- function(data, conversion_direction, min_decimals = -1) {
   # Define conversion factors
-  imperial_to_international <- c(29.5735, 1000, 946.353, 473.176, 0.453592, 0.946353, 2.54)
-  international_to_imperial <- c(0.033814, 0.001, 0.00105669, 0.00211338, 2.20462, 1.05669, 0.393701)
-
+  #imperial_to_international <- c(29.5735, 1000, 946.353, 473.176, 0.453592, 0.946353, 2.54)
+  imperial_to_international <- c(29.5735, 3785.41, 946.353, 568, 0.453592, 0.946353, 2.54)
+  #international_to_imperial <- c(0.033814, 0.001, 0.00105669, 0.00211338, 2.20462, 1.05669, 0.393701)
+  international_to_imperial <- c(0.033814, 0.33814, 3.3814, 33.814, 0.00220462, 2.20462, 0.393701)
   # Define units for conversion
   imperial_units <- c("oz", "gal", "qt", "pint", "lb", "quart", "inch")
   international_units <- c("cl", "ml", "dl", "l", "gr", "kg", "cm")
@@ -26,7 +27,7 @@ convertUnits <- function(data, conversion_direction, min_decimals = -1) {
   # Perform conversion based on the specified direction
   if (conversion_direction == "imperial_to_international") {
     for (i in 1:nrow(data)) {
-      for (j in 1:ncol(data)) {
+      for (j in 7:ncol(data)) {
         if (!is.na(data[i, j])) {
           parts <- stringr::str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
           if (!is.null(parts) && length(parts) == 3 && parts[3] %in% imperial_units) {
@@ -61,7 +62,7 @@ convertUnits <- function(data, conversion_direction, min_decimals = -1) {
     }
   } else if (conversion_direction == "international_to_imperial") {
     for (i in 1:nrow(data)) {
-      for (j in 1:ncol(data)) {
+      for (j in 7:ncol(data)) {
         if (!is.na(data[i, j])) {
           parts <- stringr::str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
           if (!is.null(parts) && length(parts) == 3 && parts[3] %in% international_units) {
@@ -85,8 +86,8 @@ convertUnits <- function(data, conversion_direction, min_decimals = -1) {
               new_unit <- unit
             }
 
-            # Round the converted value to the specified number of decimals
-            rounded_value <- round(converted_value, min_decimals)
+            # Round the converted value to 1 to avoid having i.e. 10ml converted to 0 ounces
+            rounded_value <- round(converted_value, 1)
 
             # Update the dataset
             data[i, j] <- paste(rounded_value, new_unit)

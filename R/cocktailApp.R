@@ -144,11 +144,12 @@ cocktailApp <- function(){
       title <- h2(cocktail$Name)
       image <- tags$img(src = cocktail$Picture, height = "200px")
       category <- h3(paste("Category:", cocktail$Category))
-      recipe <- h4("Recipe: ", cocktail$Recipe)
+      glass <- h4("Glass: ", cocktail$Glass)
       ingredients_table_html <- tableOutput("ingredientsTable")
+      recipe <- h4("Recipe: ", cocktail$Recipe)
 
       #arrange elements in layout
-      tagList(title, image, category, ingredients_table_html, recipe)
+      tagList(title, image, category, glass, ingredients_table_html, recipe)
       # }
     })
     #rendering ingredient-quantity table
