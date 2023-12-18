@@ -9,7 +9,7 @@ vignette: >
 
 # Introduction
 
-This vignette will guide you through the Cocktail Selector package. You'll learn how to install the package, use its main functions, and explore the various features it offers.
+This article will guide you through the Cocktail Selector package. You'll learn how to install the package, use its main functions, and explore the various features it offers.
 
 # Installation
 
@@ -26,12 +26,7 @@ devtools::install_github("ptds2023/Project_Group_D")
 
 # Launching the Shiny App
 
-To start the app, load the package and call the cocktailApp function:
-
-```{r}
-library(CocktailSelector)
-cocktailApp()
-```
+To start the app, load the package "CocktailSelector" and call the "cocktailApp" function
 
 # Navigating the App Interface
 
