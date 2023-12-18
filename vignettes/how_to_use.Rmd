@@ -13,16 +13,7 @@ This article will guide you through the Cocktail Selector package. You'll learn 
 
 # Installation
 
-Install the Cocktail Selector from GitHub using `devtools`:
-
-```{r installation, eval=FALSE}
-# Install devtools if not already installed
-if (!requireNamespace("devtools", quietly = TRUE))
-    install.packages("devtools")
-
-# Install the Cocktail Selector package
-devtools::install_github("ptds2023/Project_Group_D")
-```
+Install the Cocktail Selector from GitHub using `devtools`
 
 # Launching the Shiny App
 
@@ -32,7 +23,7 @@ To start the app, load the package "CocktailSelector" and call the "cocktailApp"
 
 The app consists of several tabs, each with specific functionality:
 
-- **Cocktail List Tab**:Select an alcohol type and additional ingredients.View a list of cocktails that can be made with the selected ingredients.Clear selections to start over or be surprised with a random cocktail recommendation.
+- **Cocktail List Tab**:Select an alcohol type and additional ingredients (max 2 ingredients).View a list of cocktails that can be made with the selected ingredients.Clear selections to start over or be surprised with a random cocktail recommendation.
 
 - **Cocktail Details Tab**: Detailed information about the cocktail is displayed here.Users can view the cocktail's recipe, ingredients, and an image.
 
@@ -43,11 +34,16 @@ The app consists of several tabs, each with specific functionality:
 Start by choosing a base alcohol from the dropdown.
 Additional ingredient dropdowns will update based on the base alcohol selected.
 
-- **Exploring Recipes**: The app will display cocktail options based on the selected ingredients. Click on any cocktail to view detailed information, such as the recipe and ingredients required.
+- **Exploring Recipes**: The app will display drink options based on the selected ingredients. Click on any drink to view detailed information, such as the recipe and ingredients required.
 
 - **Clearing Selections**: At any point, use the 'Clear Ingredients' button to reset your selections and start over.
 
-- **Surprise Me Feature**: Not sure what you want? Use the 'Surprise Me' feature for a random cocktail selection.
+- **Surprise Me Feature**: Not sure what you want? Use the 'Surprise Me' feature for a random drink selection.
+
+- **Measurement units**: At any point, change the units : international = ml and imperial = oz
+
+# Functions 
+You can find the different functions in the reference section 
 
 # Functions 
 You can find the different functions in the reference section 
