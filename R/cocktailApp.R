@@ -133,10 +133,10 @@ cocktailApp <- function(){
     # })
     #second output
     output$cocktailDetails <- renderUI({
-      # if (is.null(showdetails())) {
-      #   p("Click on a cocktail in the Cocktails List tab to see the details")
-      # } else {
-        #selecting cocktail which the user clicked on
+      if (is.null(selected_cocktail()) || nrow(selected_cocktail()) == 0) {
+        return(h4("Please select a cocktail from the Cocktail List tab to see the details."))
+      }
+      #selecting cocktail which the user clicked on
       if (!show_details()) return(NULL)
       cocktail <- selected_cocktail()
       if (is.null(cocktail) || nrow(cocktail) == 0) return(NULL)
@@ -205,3 +205,4 @@ cocktailApp <- function(){
   # Run the application
   shinyApp(ui = ui, server = server)
 }
+
