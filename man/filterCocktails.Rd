@@ -25,5 +25,5 @@ It filters the datasets based on on alcohol and two side ingredients
 an returns a filtered dataframe with drink corresponding to those criteria.
 }
 \examples{
-cocktailList(cocktails, "gin")
+filterCocktails(cocktails, "gin")
 }
