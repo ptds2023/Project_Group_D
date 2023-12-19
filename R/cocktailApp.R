@@ -4,7 +4,6 @@
 #' @return Opens shiny app
 #' @import shiny
 #' @import htmltools
-#' @import shinythemes
 #' @importFrom magrittr %>%
 #' @export
 
