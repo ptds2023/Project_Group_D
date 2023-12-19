@@ -12,8 +12,7 @@ cocktailApp <- function(){
   pastel_green_color <- "#78c1ad"
   # Define UI
   ui <- fluidPage(
-    theme = bslib::bs_theme(      version = 4,
-                                  bootswatch = "minty"),
+    theme = bslib::bs_theme(version = 4, bootswatch = "minty"),
     tags$head(
       tags$style(HTML(paste0("
             .navbar .navbar-nav .nav-link {
@@ -124,10 +123,10 @@ cocktailApp <- function(){
     show_details <- reactiveVal(FALSE)
 
     # Reset selected cocktail and show details flag when the first ingredient changes
-    observeEvent(input$ingredient1, {
-      selected_cocktail(NULL)
-      show_details(FALSE)
-    }, ignoreInit = TRUE)
+    # observeEvent(input$ingredient1, {
+    #   selected_cocktail(NULL)
+    #   show_details(FALSE)
+    # }, ignoreInit = TRUE)
 
     # Reset cocktail details when the 'Cocktail List' tab is clicked
     observeEvent(input$navbar, {
@@ -228,4 +227,3 @@ cocktailApp <- function(){
   # Run the application
   shinyApp(ui = ui, server = server)
 }
-

@@ -16,7 +16,7 @@
 convertUnits <- function(data, conversion_direction) {
   # Define conversion factors
   #imperial_to_international <- c(29.5735, 1000, 946.353, 473.176, 0.453592, 0.946353, 2.54)
-  imperial_to_international <- c(29.5735, 3785.41, 946.353, 568, 0.453592, 0.946353, 2.54)
+  imperial_to_international <- c(29.5735, 3785.41, 946.353, 568, 0.453592, 946.353, 2.54)
   #international_to_imperial <- c(0.033814, 0.001, 0.00105669, 0.00211338, 2.20462, 1.05669, 0.393701)
   international_to_imperial <- c(0.033814, 0.33814, 3.3814, 33.814, 0.00220462, 2.20462, 0.393701)
   # Define units for conversion
@@ -34,27 +34,23 @@ convertUnits <- function(data, conversion_direction) {
             unit <- parts[3]
             if (unit %in% c("oz", "gal", "qt", "pint", "quart")) {
               # Convert volume to ml
-              converted_value <- value * imperial_to_international[which(imperial_units == unit)]
+              converted_value <- round(value * imperial_to_international[which(imperial_units == unit)], -1)
               new_unit <- "ml"
             } else if (unit %in% c("lb")) {
               # Convert mass to kg
-              converted_value <- value * imperial_to_international[which(imperial_units == "lb")]
+              converted_value <- round(value * imperial_to_international[which(imperial_units == "lb")], 1)
               new_unit <- "kg"
             } else if (unit %in% c("inch")) {
               # Convert distance to cm
-              converted_value <- value * imperial_to_international[which(imperial_units == "inch")]
+              converted_value <- round(value * imperial_to_international[which(imperial_units == "inch")], 1)
               new_unit <- "cm"
             } else {
               # Keep the original value if not in the specified units
               converted_value <- value
               new_unit <- unit
             }
-
-            # Round the converted value to the specified number of decimals
-            rounded_value <- round(converted_value, -1)
-
             # Update the dataset
-            data[i, j] <- paste(rounded_value, new_unit)
+            data[i, j] <- paste(converted_value, new_unit)
           }
         }
       }
