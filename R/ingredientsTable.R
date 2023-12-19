@@ -1,6 +1,6 @@
 #' Render Ingredient-Quantity Table
 #'
-#' The render_ing_table function takes as input the cocktails dataframe and the
+#' The ingredientsTable function takes as input the cocktails dataframe and the
 #' name of a cocktail in that dataframe and returns its ingredients along with quantities.
 #' @param selected_cocktail A cocktail name string
 #' @param df The cocktails dataframe
@@ -10,14 +10,13 @@
 #' @export
 #'
 #' @examples
-#' render_ing_table(cocktails, "daiquiri")
-render_ing_table <- function(df, selected_cocktail) {
+#' ingredientsTable(cocktails, "daiquiri")
+ingredientsTable <- function(df, selected_cocktail) {
   # Check if df is NULL or empty, or if the selected cocktail is not in the df
   if (is.null(df) || nrow(df) == 0 || !(selected_cocktail %in% df$Name)) {
-    return(xtable::xtable(data.frame(Ingredient = NA, Quantity = NA)))  # Return an empty table
+    return(xtable::xtable(data.frame(Ingredient = NA, Quantity = NA)))
   }
-
-  # Proceed with the processing
+  #creating table
   ing_table <- df %>%
     dplyr::filter(.data$Name == selected_cocktail) %>%
     dplyr::select(-c(.data$Type, .data$Category, .data$Picture, .data$Glass, .data$Recipe)) %>%

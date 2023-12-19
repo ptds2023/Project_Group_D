@@ -5,7 +5,6 @@
 #' @import shiny
 #' @import htmltools
 #' @import shinythemes
-#' @imoort bslib
 #' @importFrom magrittr %>%
 #' @export
 
@@ -95,11 +94,11 @@ cocktailApp <- function(){
 
     # Render the welcome text
     output$welcomeText <- renderText({
-      welcome_message()
+      welcomeMessage()
     })
 
     filtered_data <- reactive({
-      filtering_fun(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
+      filterCocktails(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
     })
 
     # First output: List of cocktails
@@ -191,7 +190,7 @@ cocktailApp <- function(){
     output$ingredientsTable <- renderTable({
       df <- selected_cocktail()
       cocktail_name <- df$Name
-      render_ing_table(df, cocktail_name)
+      ingredientsTable(df, cocktail_name)
     })
 
     # Call the function to update side ingredients

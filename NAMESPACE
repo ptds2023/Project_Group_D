@@ -2,8 +2,8 @@
 
 export(cocktailApp)
 export(convertUnits)
-export(filtering_fun)
-export(render_ing_table)
+export(filterCocktails)
+export(ingredientsTable)
 import(htmltools)
 import(shiny)
 import(shinythemes)
