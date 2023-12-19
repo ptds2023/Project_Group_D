@@ -7,14 +7,13 @@
 #' @param data A dataframe
 #' @param conversion_direction A string to define conversion direction
 #'    (imperial_to_international or international_to_imperial)
-#' @param min_decimals The number of decimals of converted numbers
 #'
 #' @return A new dataframe with either imperial or international units
 #' @export
 #'
 #' @examples
 #' convertUnits(cocktails, "imperial_to_international")
-convertUnits <- function(data, conversion_direction, min_decimals = -1) {
+convertUnits <- function(data, conversion_direction) {
   # Define conversion factors
   #imperial_to_international <- c(29.5735, 1000, 946.353, 473.176, 0.453592, 0.946353, 2.54)
   imperial_to_international <- c(29.5735, 3785.41, 946.353, 568, 0.453592, 0.946353, 2.54)
@@ -52,7 +51,7 @@ convertUnits <- function(data, conversion_direction, min_decimals = -1) {
             }
 
             # Round the converted value to the specified number of decimals
-            rounded_value <- round(converted_value, min_decimals)
+            rounded_value <- round(converted_value, -1)
 
             # Update the dataset
             data[i, j] <- paste(rounded_value, new_unit)
