@@ -2,12 +2,12 @@ Package: CocktailSelector
 Type: Package
 Title: Cocktail Recommendation & Ingredients
 Version: 1.0
-Authors@R:
-    person("Nathan", "Vandeven", email = "@unil.ch", role = c("aut", "cre"))
-    person("Tiffany", "Davies", email = "tiff_davies@me.com", role = c("aut", "cre"))
-    person("Radoslaw", "Mlynarczyk", email = "@unil.ch", role = c("aut", "cre"))
-    person("Candelaria", "Retamal", email = "candelaria.retamalmartinez@unil.ch", role = c("aut", "cre"))
-    person("Jordan", "Vazquez", email = "jordan.vazquez@unil.ch", role = c("aut", "cre"))
+Authors@R:c(
+    person("Nathan", "Vandeven", email = "nathan.vandeven@unil.ch", role = c("aut")),
+    person("Tiffany", "Davies", email = "tiffany.davies@unil.ch", role = c("aut")),
+    person("Radoslaw", "Mlynarczyk", email = "radoslaw.mlynarczyk@unil.ch", role = c("aut")),
+    person("Candelaria", "Retamal", email = "candelaria.retamalmartinez@unil.ch", role = c("aut", "cre")),
+    person("Jordan", "Vazquez", email = "jordan.vazquez@unil.ch", role = c("aut")))
 Description: The CocktailSelector package can be used to find cocktails containing
     a pre-defined selection of ingredients. It give a list of cocktails satisfying
     the input criteria, shows the ingredients needed for that cocktail, and explains

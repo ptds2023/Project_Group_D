@@ -1,4 +1,4 @@
-title: CocktailSelector
+title: Cocktail Explorer
 description: "An R package and Shiny app designed to help you discover new and exciting cocktail recipes."
 template:
   bootstrap: 5
