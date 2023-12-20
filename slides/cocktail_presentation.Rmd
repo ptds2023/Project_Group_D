@@ -5,7 +5,6 @@ author: "Candelaria Retamal, Jordan Vazquez, Nathan Vandeven, Radoslaw Mlynarczy
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
-      
     nature:
       slideNumberFormat: "%current%"
       highlightStyle: github
@@ -29,9 +28,16 @@ knitr::opts_chunk$set(
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
 style_duo_accent(
-  primary_color = "#3EB489",
-  inverse_header_color = "#FFFFFF"
+  primary_color = "#78c1ad",
+  inverse_header_color = "#FFFFFF",
+  title_slide_text_color = "#FFFFFF"
 )
+```
+
+```{r Packages, echo=FALSE}
+library(knitr)
+library(kableExtra)
+library(gridExtra)
 ```
 
 # Contents
@@ -56,33 +62,33 @@ Let's see what we achieved!
 
 ## R and Shiny Empowering Mixology Exploration
 
-- The world of mixology is vast, with countless cocktail possibilities. As aspiring programmers, we saw an opportunity to blend technology with mixology to create a unique and interactive experience.
+The world of mixology is vast, with countless cocktail possibilities. As aspiring programmers, we saw an opportunity to blend technology with mixology to create a unique and interactive experience.
 
-- **R Language:**
-    - Enabled efficient data processing.
-    - Facilitated seamless integration with our mixology dataset.
-    - Facilitated dynamic exploration of 600 curated cocktails.
+**R Language:**
+  - Enabled efficient data processing.
+  - Facilitated seamless integration with our mixology dataset.
+  - Facilitated dynamic exploration of 600 curated cocktails.
 
-- **Shiny App:**
-    - Provided an interactive platform for users to explore cocktails.
-    - Bridged the gap between mixology knowledge and technology.
-    - Transformed our vision into an engaging user interface.
-    - Enabled users to discover, search, and receive personalized cocktail recommendations.
+**Shiny App:**
+  - Provided an interactive platform for users to explore cocktails.
+  - Bridged the gap between mixology knowledge and technology.
+  - Transformed our vision into an engaging user interface.
+  - Enabled users to discover, search, and receive personalized cocktail recommendations.
 
 ---
 
 ## Our motivation
 
-- **Project Inspiration:**
+**Project Inspiration:**
   - Fueled by a desire to merge technology and mixology, our vision was to create a practical tool that empowers users to explore the world of cocktails effortlessly.
 
-- **Practicality:**
-    - We aimed to develop a tool that users can immediately apply to enhance their mixology experience.
-    - Practicality guided our decisions, ensuring the project remained feasible within the given timeframe and our R and Shiny expertise.
+**Practicality:**
+  - We aimed to develop a tool that users can immediately apply to enhance their mixology experience.
+  - Practicality guided our decisions, ensuring the project remained feasible within the given timeframe and our R and Shiny expertise.
 
-- **Learning Journey:**
-    - Motivated by the opportunity to delve into R and Shiny, our project served as a valuable learning experience.
-    - We embraced the challenge of combining programming skills with mixology, expanding our knowledge in both domains.
+**Learning Journey:**
+  - Motivated by the opportunity to delve into R and Shiny, our project served as a valuable learning experience.
+  - We embraced the challenge of combining programming skills with mixology, expanding our knowledge in both domains.
 
 ---
 
@@ -120,23 +126,17 @@ Let's see what we achieved!
 6. Flexible and Comprehensive: Ensures accommodation of cocktails with varying ingredients.
 
 ```{r, echo=FALSE}
-
-library(knitr)
-library(kableExtra)
-
 # Creating a data frame
 cocktail_data <- data.frame(
   Cocktail = c("Cocktail 1", "Cocktail 2", "Cocktail 3"),
   Ingredient_1 = c("Lime", "Raspberry", "Cranberry"),
   Ingredient_2 = c("Vodka", "Beer", "Orange Juice"),
-  Ingredient_3 = c("N/A", "N/A", "Rum")
-)
-
-kable(cocktail_data, format = "html", 
+  Ingredient_3 = c("N/A", "N/A", "Rum")) %>% 
+  kable(format = "html", 
       col.names = c("Cocktail", "Ingredient 1", "Ingredient 2", "Ingredient 3"),
       align = "c") %>%
   kable_styling("striped", full_width = FALSE) 
-  
+cocktail_data
 ```
 ---
 
@@ -147,66 +147,47 @@ kable(cocktail_data, format = "html",
 - Handling diverse measurements: kept measurements in their original string format
 
 ```{r, echo=FALSE}
-
-library(knitr)
-library(kableExtra)
-
 # Creating a data frame
 cocktail_data2 <- data.frame(
   Cocktail = c("Cocktail 1", "Cocktail 2"),
   Ingredient_1 = c("Lime", "Grape Juice"),
-  Ingredient_2 = c("Vodka", "Beer")
-)
-
-# Displaying the table using kable with formatting
-kable(cocktail_data2, format = "html", 
+  Ingredient_2 = c("Vodka", "Beer")) %>% 
+  kbl(format = "html", 
       col.names = c("Cocktail", "Ingredient 1", "Ingredient 2"),
       align = "c") %>%
-  kable_styling("striped", full_width = FALSE)
-
+  kable_styling("striped", full_width = FALSE, position = "left")
+cocktail_data2
 ```
 
 ```{r, echo=FALSE}
-
-library(knitr)
-library(kableExtra)
-
 # Creating a data frame
 cocktail_data3 <- data.frame(
   Cocktail = c("Cocktail 1", "Cocktail 2"),
   Measure_1 = c("1/2", "50 ml"),
-  Measure_2 = c("1 1/3 cup", "0.7 oz")
-)
-
-# Displaying the table using kable with formatting
-kable(cocktail_data3, format = "html", 
+  Measure_2 = c("1 1/3 cup", "0.7 oz")) %>% 
+  kable(format = "html", 
       col.names = c("Cocktail", "Measure 1", "Measure 2"),
       align = "c") %>%
-  kable_styling("striped", full_width = FALSE)
-
+  kable_styling("striped", full_width = FALSE, position = "left")
+cocktail_data3
 ```
-<br>
+
 ```{r, echo=FALSE}
-
-library(knitr)
-library(kableExtra)
-
 # Creating a data frame
 cocktail_data4 <- data.frame(
   Cocktail = c("Cocktail 1", "Cocktail 2"),
   Lime = c("1/2", "N/A"),
   Grape_juice = c("N/A", "50 ml"),
   Vodka = c("1 1/3 cup", "N/A"),
-  Beer = c("N/A", "0.7 oz")
-)
+  Beer = c("N/A", "0.7 oz"))
 
-# Displaying the table using kable with formatting
-kable(cocktail_data4, format = "html", 
+cocktail_data4 %>% 
+  kable(format = "html", 
       col.names = c("Cocktail", "Lime", "Grape Juice", "Vodka", "Beer"),
       align = "c") %>%
   kable_styling("striped", full_width = FALSE)
-
 ```
+
 ---
 ## Data wrangling: unit homogenization
 
@@ -216,23 +197,15 @@ kable(cocktail_data4, format = "html",
 - We do this step to make it easier to convert units using the R package, enabling data manipulation
 
 ```{r, echo=FALSE}
-
-library(knitr)
-library(kableExtra)
-
-kable(cocktail_data4, format = "html", 
+cocktail_data4 %>% 
+  kable(format = "html", 
       col.names = c("Cocktail", "Lime", "Grape Juice", "Vodka", "Beer"),
       align = "c") %>%
   kable_styling("striped", full_width = FALSE, position="center")
 
 ```
 <br>
-
 ```{r, echo=FALSE}
-
-library(knitr)
-library(kableExtra)
-
 # Creating a data frame
 cocktail_data5 <- data.frame(
   Cocktail = c("Cocktail 1", "Cocktail 2"),
@@ -247,16 +220,183 @@ kable(cocktail_data5, format = "html",
       col.names = c("Cocktail", "Lime", "Grape Juice", "Vodka", "Beer"),
       align = "c") %>%
   kable_styling("striped", full_width = FALSE,position="center")
-
 ```
 
 ---
+## Package functions
 
-## Conclusion
+Our package contains a total of 7 functions</b>:
+
+- <b>3 internal functions</b>
+  - renderSideIngredientUI
+  - updateSideIngredient
+  - welcomeMessage
+- <b>4 external functions that are exported</b>
+   - cocktailApp
+   - filterCocktails
+   - ingredientsTable
+   - convertUnits
+   
+---
+## renderSideIngredientUI
+Renders the 3 dropdown menus dynamically
+```{r}
+renderSideIngredientUI <- function(input, output) {
+  output$sideIngredient1Dropdown <- renderUI({
+    if (!is.na(input$ingredient1) && input$ingredient1 != "" && input$ingredient1 != "Choose") {
+      selectInput("ingredient2", "Side Ingredient 1", choices = c("Choose" = ""), selected = "Choose", multiple = FALSE)
+    }
+  })
+
+  output$sideIngredient2Dropdown <- renderUI({
+    if (isTruthy(input$ingredient2) && input$ingredient2 != "Choose") {
+      selectInput("ingredient3", "Side Ingredient 2", choices = c("Choose" = ""), selected = "Choose", multiple = FALSE)
+    } else {
+      return(NULL)  # Return NULL if the condition is not met
+    }
+  })
+}
+```
+
+---
+## updateSideIngredients
+Updates which ingredients are shown in the dropdowns depending on previous selection.
+```{r}
+updateSideIngredients <- function(input, session, cocktails) {
+  observeEvent(input$ingredient1, {
+    if (input$ingredient1 != "" && input$ingredient1 != "Choose") {
+      compatible_cocktails <- cocktails[!is.na(cocktails[[input$ingredient1]]), ]
+      ingredient_columns <- colnames(cocktails)[7:ncol(cocktails)]
+      non_na_ingredients <- ingredient_columns[colSums(!is.na(compatible_cocktails[ingredient_columns])) > 0]
+      non_na_ingredients <- setdiff(non_na_ingredients, input$ingredient1)
+      updateSelectInput(session, "ingredient2", choices = c("Choose" = "", sort(non_na_ingredients)))
+    } else {
+      updateSelectInput(session, "ingredient2", choices = c("Choose" = ""))
+    }
+  })
+
+  observeEvent(input$ingredient2, {
+    if (input$ingredient2 != "" && input$ingredient2 != "Choose") {
+      compatible_cocktails <- cocktails[!is.na(cocktails[[input$ingredient1]]) & !is.na(cocktails[[input$ingredient2]]), ]
+      ingredient_columns <- colnames(cocktails)[7:ncol(cocktails)]
+      non_na_ingredients <- ingredient_columns[colSums(!is.na(compatible_cocktails[ingredient_columns])) > 0]
+      non_na_ingredients <- setdiff(non_na_ingredients, c(input$ingredient1, input$ingredient2))
+      updateSelectInput(session, "ingredient3", choices = c("Choose" = "", sort(non_na_ingredients)))
+    } else {
+      updateSelectInput(session, "ingredient3", choices = c("Choose" = ""))
+    }
+  })
+}
+```
+
+---
+## welcomeMessage
+Shows welcome message popup when launching the app
+```{r}
+welcomeMessage <- function() {
+  message <- HTML(paste0("Welcome to the Cocktail Explorer App!", '<br/>','<br/>',
+                   "Select your favorite alcohol and two ingredients, and let us surprise you with the best matching cocktails.", '<br/>',
+                   "Feeling adventurous today? Click on the Surprise Me button, and we'll pick the best drinks for you!", '<br/>', '<br/>',
+                   "You can also go to the instructions tab to learn more about the different features of the app.")
+                  )
+  return(message)
+}
+```
+
+---
+## cocktaiApp
+Launched shiny app
+```{r}
+cocktailApp <- function(){
+  #ui
+  #server
+  #run the application
+  shinyApp(ui = ui, server = server)
+}
+```
+
+---
+## filterCocktails
+Takes the selection from the dropdowns and filters the cocktails dataframe
+```{r}
+filterCocktails <- function(df, alcohol = NULL, ing1 = NULL, ing2 = NULL){
+  result <- df
+    if (!is.null(alcohol) && alcohol!="") {
+      result <- result[!is.na(result[[alcohol]]), ]
+    }
+    if (!is.null(ing1) && ing1!="") {
+      result <- result[!is.na(result[[ing1]]), ]
+    }
+    if (!is.null(ing2) && ing2!="") {
+      result <- result[!is.na(result[[ing2]]), ]
+    }
+  return(result)
+}
+```
+
+---
+## ingredientsTable
+Returns a kable of ingredients and corresponding quantities for a specific cocktail
+```{r}
+ingredientsTable <- function(df = cocktails, selected_cocktail) {
+  # Check if the selected cocktail is not in the df
+  if(!(selected_cocktail %in% df$Name)){
+    stop("This cocktail is not in the dataframe")
+  }
+  #creating table
+  ing_table <- df %>%
+    dplyr::filter(Name == selected_cocktail) %>%
+    dplyr::select(-c(Type, Category, Picture, Glass, Recipe)) %>%
+    tidyr::pivot_longer(-Name, names_to = "Ingredient", values_to = "Quantity", values_drop_na = TRUE) %>%
+    dplyr::select(-Name) %>%
+    kableExtra::kbl() %>%
+    kableExtra::kable_styling("striped")
+
+  return(ing_table)
+}
+```
+
+---
+## convertUnits
+```{r}
+convertUnits <- function(data, conversion_direction) {
+  if (conversion_direction == "imperial_to_international") {
+    for (i in 1:nrow(data)) {
+      for (j in 7:ncol(data)) {
+        if (!is.na(data[i, j])) {
+          parts <- stringr::str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
+          if (!is.null(parts) && length(parts) == 3 && parts[3] %in% imperial_units) {
+            value <- as.numeric(parts[2])
+            unit <- parts[3]
+            if (unit %in% c("oz", "gal", "qt", "pint", "quart")) {
+              # Convert volume to ml
+              converted_value <- round(value * imperial_to_international[which(imperial_units == unit)], -1)
+              new_unit <- "ml"
+            } else if (unit %in% c("lb")) {
+              # Convert mass to kg
+              converted_value <- round(value * imperial_to_international[which(imperial_units == "lb")], 1)
+              new_unit <- "kg"
+            } else if (unit %in% c("inch")) {
+              # Convert distance to cm
+              converted_value <- round(value * imperial_to_international[which(imperial_units == "inch")], 1)
+              new_unit <- "cm"
+            } else {
+              # Keep the original value if not in the specified units
+              converted_value <- value
+              new_unit <- unit
+            }
+            # Update the dataset
+            data[i, j] <- paste(converted_value, new_unit)
+          }
+        }
+      }
+    }
+  }
+}
+```
 
 ---
 class: center, middle
-
 ## Thank you for your attention! 
 
 
