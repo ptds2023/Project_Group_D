@@ -1,0 +1,16 @@
+---
+title: "R packages functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{R packages functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+While the Cocktail Selector Shiny app offers an interactive experience, the underlying functionality is powered by R functions that can be leveraged directly. This article details how you can utilize these functions independently of the Shiny app interface.
+Below, we detail the various functions provided by the CocktailSelector package along with descriptions of their individual uses.
+
+# Filerting function 
+
+# The suprise me function
