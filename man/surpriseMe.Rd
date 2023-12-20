@@ -15,5 +15,8 @@ The output can the be used in the \code{ingredientsTable} function in order
 to get the ingredients and quantities needed for the cocktail.
 }
 \examples{
+#using it on its own
 surpriseMe()
+#using it with ingredientsTable
+ingredientsTable(selected_cocktail = surpriseMe()$Name)
 }

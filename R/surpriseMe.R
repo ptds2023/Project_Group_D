@@ -7,7 +7,10 @@
 #' @export
 #'
 #' @examples
+#' #using it on its own
 #' surpriseMe()
+#' #using it with ingredientsTable
+#' ingredientsTable(selected_cocktail = surpriseMe()$Name)
 surpriseMe <- function(){
   return(cocktails[sample(nrow(cocktails), 1), ])
 }

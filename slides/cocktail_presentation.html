@@ -274,17 +274,18 @@ class: center, middle, inverse, title-slide
 ---
 ## Package functions
 
-Our package contains a total of 7 functions&lt;/b&gt;:
+Our package contains a total of 8 functions&lt;/b&gt;:
 
 - &lt;b&gt;3 internal functions&lt;/b&gt;
   - renderSideIngredientUI
   - updateSideIngredient
   - welcomeMessage
-- &lt;b&gt;4 external functions that are exported&lt;/b&gt;
+- &lt;b&gt;5 external functions that are exported&lt;/b&gt;
    - cocktailApp
    - filterCocktails
    - ingredientsTable
    - convertUnits
+   - surpriseMe
    
 ---
 ## renderSideIngredientUI
@@ -452,8 +453,38 @@ convertUnits &lt;- function(data, conversion_direction) {
 ```
 
 ---
+## surpriseMe
+Returns a random row within the cocktails dataframe
+
+```r
+surpriseMe &lt;- function(){
+  return(cocktails[sample(nrow(cocktails), 1), ])
+}
+```
+
+---
+## How does the shiny app look like?
+&lt;img src="fig/whole_app.png" width="100%" /&gt;
+
+---
+## Main features
+We have 4 main functionalities in shiny:
+1. Filtering based on ingredients selected &amp;rarr; filterCocktails()
+2. Surprise me button &amp;rarr; shiny + surpriseMe()
+3. Measurement unit transformation &amp;rarr; convertUnits()
+4. See details for a selected cocktail &amp;rarr; shiny + ingredientsTable()
+
+---
+## Cocktail List
+&lt;img src="fig/filtering_markup.png" width="100%" /&gt;
+
+---
+## Cocktail Details
+
+&lt;img src="fig/details.png" width="100%" /&gt;
+
+---
 class: center, middle
-## Now, let's have a look at our website!
 ## Thank you for your attention! 
 
 

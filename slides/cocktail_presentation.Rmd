@@ -38,6 +38,7 @@ style_duo_accent(
 library(knitr)
 library(kableExtra)
 library(gridExtra)
+library(here)
 ```
 
 ## Your Evening, Your Elixir
@@ -206,17 +207,18 @@ kable(cocktail_data5, format = "html",
 ---
 ## Package functions
 
-Our package contains a total of 7 functions</b>:
+Our package contains a total of 8 functions</b>:
 
 - <b>3 internal functions</b>
   - renderSideIngredientUI
   - updateSideIngredient
   - welcomeMessage
-- <b>4 external functions that are exported</b>
+- <b>5 external functions that are exported</b>
    - cocktailApp
    - filterCocktails
    - ingredientsTable
    - convertUnits
+   - surpriseMe
    
 ---
 ## renderSideIngredientUI
@@ -377,8 +379,43 @@ convertUnits <- function(data, conversion_direction) {
 ```
 
 ---
+## surpriseMe
+Returns a random row within the cocktails dataframe
+```{r}
+surpriseMe <- function(){
+  return(cocktails[sample(nrow(cocktails), 1), ])
+}
+```
+
+---
+## How does the shiny app look like?
+```{r echo=FALSE}
+knitr::include_graphics(here("slides/fig/whole_app.png"))
+```
+
+---
+## Main features
+We have 4 main functionalities in shiny:
+1. Filtering based on ingredients selected &rarr; filterCocktails()
+2. Surprise me button &rarr; shiny + surpriseMe()
+3. Measurement unit transformation &rarr; convertUnits()
+4. See details for a selected cocktail &rarr; shiny + ingredientsTable()
+
+---
+## Cocktail List
+```{r echo=FALSE}
+knitr::include_graphics(here("slides/fig/filtering_markup.png"))
+```
+
+---
+## Cocktail Details
+
+```{r echo=FALSE, fig.height=5}
+knitr::include_graphics(here("slides/fig/details.png"))
+```
+
+---
 class: center, middle
-## Now, let's have a look at our website!
 ## Thank you for your attention! 
 
 

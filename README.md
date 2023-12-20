@@ -30,7 +30,7 @@ based on your preferred alcohol and ingredients.
 -   `filterCocktails`: Filters the cocktail list based on chosen alcohol
     and ingredients, offering personalized drink suggestions.
 
--    `ingredientsTable`: Generates a table displaying ingredients and
+-   `ingredientsTable`: Generates a table displaying ingredients and
     quantities for selected cocktails.
 
 -   `welcomeMessage`: Displays an engaging welcome message to users when
@@ -102,6 +102,6 @@ print(converted_data_international)
 | **4** | NA       | NA       | NA       | NA       | NA       | NA       | 10 ml     |
 
 This example demonstrates the conversion of ingredient quantities from
-ounces to milliliters, a common requirement in cocktail preparation.
-Adjust the dataframe to match your specific needs and explore the
-flexibility of the CocktailSelector package.
+ounces to milliliters, a common requirement in cocktail
+preparation.Adjust the dataframe to match your specific needs and
+explore the flexibility of the CocktailSelector package.
