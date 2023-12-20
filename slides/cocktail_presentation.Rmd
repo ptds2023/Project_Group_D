@@ -389,9 +389,10 @@ surpriseMe <- function(){
 
 ---
 ## How does the shiny app look like?
-```{r echo=FALSE}
-knitr::include_graphics(here("slides/fig/whole_app.png"))
-```
+
+<div style="text-align: center;">
+
+<img src="fig/whole_app.png" alt="Whole app." style="max-width: 100%; max-height: 68vh;"/>
 
 ---
 ## Main features
@@ -403,16 +404,17 @@ We have 4 main functionalities in shiny:
 
 ---
 ## Cocktail List
-```{r echo=FALSE}
-knitr::include_graphics(here("slides/fig/filtering_markup.png"))
-```
+
+<div style="text-align: center;">
+
+<img src="fig/filtering_markup.png" alt="Filtering markup." style="max-width: 100%; max-height: 65vh;"/>
 
 ---
 ## Cocktail Details
 
-```{r echo=FALSE, fig.height=5}
-knitr::include_graphics(here("slides/fig/details.png"))
-```
+<div style="text-align: center;">
+
+<img src="fig/details.png" alt="Details." style="max-width: 100%; max-height: 65vh;"/>
 
 ---
 class: center, middle
