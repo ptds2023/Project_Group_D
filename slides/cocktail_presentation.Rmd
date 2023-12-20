@@ -40,55 +40,36 @@ library(kableExtra)
 library(gridExtra)
 ```
 
-# Contents
+## Your Evening, Your Elixir
 
-**Introduction**
+**Imagine:**
+  - An evening unfolds, and the craving for a delightful drink sets in.
+  - The world of mixology sprawls before you, full of possibilities but also overwhelming.
 
-Why do we use R and Shiny and what is the power behind them? What was our vision and motivation?
+**Our Solution:**
+  - A tool born from the fusion of technology and mixology.
+  - Simplifying your quest for the perfect evening elixir.
 
-**Methodology**
-
-How did we structure our work? What were the steps?
-
-**Results - Shiny and R package**
-
-How does the Shiny and R package work? What are the most important features?
-
-**Our website & demonstration**
-
-Let's see what we achieved!
+**The Scene Unfolds:**
+  - An interactive platform designed to simplify your journey into the world of cocktails.
+  - Choose your ingredients, and let the tool curate tailored cocktails.
+  - No expertise needed; become your own mixologist effortlessly.
 
 ---
+## The Vision Behind Our Mixological Innovation
 
-## R and Shiny Empowering Mixology Exploration
+**Igniting the Project:**
+  - Fueled by a burning desire to fuse technology seamlessly with mixology.
+  - Our mission: Craft a practical tool that effortlessly empowers users to navigate the intricate world of cocktails.
 
-The world of mixology is vast, with countless cocktail possibilities. As aspiring programmers, we saw an opportunity to blend technology with mixology to create a unique and interactive experience.
+**Practical Prowess:**
+  - We set out to develop a tool immediately applicable to enhance the mixology experience.
+  - Guided by practicality, every decision aimed to ensure project feasibility within the given timeframe and leverage our R and Shiny expertise.
 
-**R Language:**
-  - Enabled efficient data processing.
-  - Facilitated seamless integration with our mixology dataset.
-  - Facilitated dynamic exploration of 600 curated cocktails.
+**A Learning Expedition:**
+  - Beyond solving a problem, our project became a valuable learning journey.
+  - Motivated by the prospect of delving into R and Shiny, we embraced the challenge
 
-**Shiny App:**
-  - Provided an interactive platform for users to explore cocktails.
-  - Bridged the gap between mixology knowledge and technology.
-  - Transformed our vision into an engaging user interface.
-  - Enabled users to discover, search, and receive personalized cocktail recommendations.
-
----
-
-## Our motivation
-
-**Project Inspiration:**
-  - Fueled by a desire to merge technology and mixology, our vision was to create a practical tool that empowers users to explore the world of cocktails effortlessly.
-
-**Practicality:**
-  - We aimed to develop a tool that users can immediately apply to enhance their mixology experience.
-  - Practicality guided our decisions, ensuring the project remained feasible within the given timeframe and our R and Shiny expertise.
-
-**Learning Journey:**
-  - Motivated by the opportunity to delve into R and Shiny, our project served as a valuable learning experience.
-  - We embraced the challenge of combining programming skills with mixology, expanding our knowledge in both domains.
 
 ---
 
@@ -96,7 +77,7 @@ The world of mixology is vast, with countless cocktail possibilities. As aspirin
 
 <div style="text-align: center; margin-top: 10%;">
 
-  <img src="cocktail_presentation_files/flowchart_final.png" alt="Flowchart." style="max-width: 100%; max-height: 80vh;"/>
+  <img src="cocktail_presentation_files/flowchart_v2.png" alt="Flowchart." style="max-width: 100%; max-height: 80vh;"/>
 
 ---
 
@@ -397,6 +378,7 @@ convertUnits <- function(data, conversion_direction) {
 
 ---
 class: center, middle
+## Now, let's have a look at our website!
 ## Thank you for your attention! 
 
 
