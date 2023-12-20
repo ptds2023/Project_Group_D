@@ -27,6 +27,7 @@ The app consists of several tabs, each with specific functionality:
 
 - **Information Tab** : Instructions on using the app.
 
+
 # Using the App
 
 Begin with the base spirit selection, and watch as the app updates the ingredient to complement your choice. Discover recipes that match your preferences and click on any cocktail to unveil its secrets.
@@ -39,5 +40,3 @@ Begin with the base spirit selection, and watch as the app updates the ingredien
 
 - **Unit conversion**: Switch between international (ml) and imperial (oz) units at your convenience, making the app versatile for global users.
 
-# Functions 
-The different functions used in the shiny app are explained in the home page and the reference section. 
