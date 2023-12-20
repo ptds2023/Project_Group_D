@@ -1,8 +1,6 @@
-
 library(testthat)
 library(dplyr)
 library(tidyr)
-library(xtable)
 
 # Sample dataframe for testing
 df <- data.frame(
@@ -15,9 +13,13 @@ df <- data.frame(
 )
 
 # Test: Invalid Cocktail Name
-test_that("ingredientsTable returns NA for invalid cocktail name", {
-  result <- ingredientsTable(df, "mojito")
-  expected <- data.frame(Ingredient = NA, Quantity = NA)
-  expect_equal(xtable::print.xtable(xtable(result), type = "html"),
-               xtable::print.xtable(xtable(expected), type = "html"))
+test_that("ingredientsTable throws error when the cocktail is not in the dataframe", {
+  expect_error(ingredientsTable(df, "mojito"), "This cocktail is not in the dataframe")
+})
+
+test_that("ingredientsTable returns expected table for a specific cocktail", {
+  result <- ingredientsTable(cocktails, "a true amaretto sour")
+  expected <- data.frame(Ingredient = c("amaretto", "lemon"), Quantity = c("1 jigger", "0.5 juice of"))
+  expect_equal(result,
+               kableExtra::kbl(expected) %>% kableExtra::kable_styling("striped"))
 })

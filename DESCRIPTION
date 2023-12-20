@@ -18,7 +18,7 @@ LazyData: true
 Imports:
     dplyr,
     tidyr,
-    xtable,
+    kableExtra,
     shiny,
     magrittr,
     rlang, 
