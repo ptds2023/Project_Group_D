@@ -1,0 +1,70 @@
+---
+title: "R packages functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{R packages functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+While the Cocktail Selector Shiny app offers an interactive experience, the underlying functionality is powered by R functions that can be leveraged directly. This article details how you can utilize these functions independently of the Shiny app interface.
+Below, we detail the various functions provided by the CocktailSelector package along with descriptions of their individual uses.
+
+# Filerting function 
+
+This function is used to create the list of drinks based on inputs from the dropdowns.
+It filters the datasets based on one alcohol and two side ingredients and returns a filtered dataframe with drinks corresponding to those criteria.
+
+*Parameters :* 
+- `df`: The cocktails dataframe included in the package
+
+- `alcohol`: A string which is in the alcohol_Vec vector
+
+- `ing1`: A string which is in the side_ing_vec vector
+
+- `ing2`: A string which is in the side_ing_vec vector
+
+For example : 
+
+```{r, eval=FALSE}
+library(CocktailSelector)
+cocktail_with_vodka_and_cranberry <- filterCocktails(cocktails, "vodka", "cranberry juice")
+print(cocktail_with_vodka_and_cranberry)
+```
+It will return a filtered drinks dataframe based on inputs(vodka and cranberry juice)
+
+
+# Ingredients table function
+
+This function takes as input the cocktails dataframe and the name of a cocktail in that dataframe and returns its ingredients along with quantities.
+
+*Parameters :* 
+
+- `df`: The cocktails dataframe from the package
+
+- `selected_cocktail`: A cocktail name string
+
+```{r, eval=FALSE}
+library(CocktailSelector)
+daiquiri <- ingredientsTable(cocktails, "daiquiri")
+print(daiquiri)
+```
+It will return an HTML table with ingredients and corresponding quantities
+
+
+# The suprise me function
+The function can be used to randomly select a cocktail from the dataframe. The output can the be used in the {ingredientsTable} function in order to get the ingredients and quantities needed for the cocktail.
+
+*example :* 
+
+```{r, eval=FALSE}
+# Using it on its own
+surpriseMe()
+
+#using it with ingredientsTable
+ingredientsTable(selected_cocktail = surpriseMe()$Name)
+```
+
+It will return a randomly selected cocktail within the {cocktails} dataframe

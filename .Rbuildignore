@@ -1,2 +1,9 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^LICENSE\.md$
+^data-raw$
+^slides$
+^_pkgdown\.yml$
+^pkgdown$
+^docs$
+^\.github$
