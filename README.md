@@ -36,6 +36,9 @@ based on your preferred alcohol and ingredients.
 -   `welcomeMessage`: Displays an engaging welcome message to users when
     the app starts, enhancing the overall user experience.
 
+-   `surpriseMe`: Displays a random cocktail from the list of options,
+    indicating the ingresients, measurements and recipe.
+
 ### Why Cocktail Selector?
 
 Choosing the right drink from countless options can be overwhelming. The
