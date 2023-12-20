@@ -1,0 +1,410 @@
+---
+title: "Wrangling"
+author: "Candelaria Retamal"
+date: "2023-12-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(here)
+library(tidyverse)
+library(devtools)
+```
+
+```{r}
+drinks_data <- read_csv(here("data-raw/all_drinks.csv"))
+```
+
+We will start by checking the unique values contained in the columns that describe the ingredients
+
+```{r}
+# Get unique values in all ingredient columns
+unique_ingredients <- unique(c(
+  drinks_data$strIngredient1, drinks_data$strIngredient2, drinks_data$strIngredient3,
+drinks_data$strIngredient4,
+drinks_data$strIngredient5,
+drinks_data$strIngredient6,
+drinks_data$strIngredient7,
+drinks_data$strIngredient8,
+drinks_data$strIngredient9,
+drinks_data$strIngredient10,
+drinks_data$strIngredient11,
+drinks_data$strIngredient12,
+drinks_data$strIngredient13,
+drinks_data$strIngredient14,
+drinks_data$strIngredient15
+))
+
+# Define a function to replace specified ingredients
+replace_ingredients <- function(x) {
+  x <- tolower(x)
+  x <- trimws(x)
+  
+  # Replace specified ingredients
+  x <- ifelse(x %in% c("anis", "anise"), "anise", x)
+  x <- ifelse(x %in% c("bailey's irish cream", "baileys irish cream"), "baileys irish cream", x)
+  x <- ifelse(x %in% c("whipped cream", "whipped Cream", "whipping cream"), "whipped cream", x)
+  x <- ifelse(x %in% c("whiskey", "whisky"), "whiskey", x)
+  
+  return(x)
+}
+
+# Apply the replacement function to all columns
+drinks_data <- mutate_all(drinks_data, replace_ingredients)
+
+# Convert to lowercase for standardization
+unique_ingredients <- tolower(unique_ingredients)
+
+# Remove leading and trailing whitespaces
+unique_ingredients <- trimws(unique_ingredients)
+
+# Get unique standardized values
+unique_ingredients <- unique(unique_ingredients)
+
+# Order the unique ingredient names alphabetically
+unique_ingredients <- sort(unique_ingredients)
+
+unique_ingredients <- sort(unique_ingredients)
+#unique_ingredients
+```
+
+In the different steps we have checked the list of unique values. First, we solved the problems of words that differed in capitalization and number of spaces. Then we solved by hand words that belonged to a same root, but were written differently in the dataset. We are now sure that we have reduced the number of ingredients to the minimum possible.
+
+```{r}
+# Create a copy of the original dataset
+drinks_data_combined <- drinks_data
+
+# Combine corresponding Ingredient and Measure columns
+for (i in 1:15) {
+  ingredient_col <- paste0("strIngredient", i)
+  measure_col <- paste0("strMeasure", i)
+  
+  new_col_name <- paste0("Ingredient_Measure_", i)
+  
+  drinks_data_combined[[new_col_name]] <- paste(drinks_data_combined[[ingredient_col]], drinks_data_combined[[measure_col]], sep = " ; ")
+}
+
+# Optionally, you can remove the individual ingredient and measurement columns
+drinks_data_combined <- select(drinks_data_combined, -starts_with("strIngredient"), -starts_with("strMeasure"))
+
+# Verify the changes
+head(drinks_data_combined)
+```
+
+```{r}
+# Create a copy of the original dataset
+drinks_data_encoded <- drinks_data
+
+# Get unique standardized values of ingredients
+unique_ingredients <- c(
+  drinks_data$strIngredient1, drinks_data$strIngredient2, drinks_data$strIngredient3,
+  drinks_data$strIngredient4, drinks_data$strIngredient5, drinks_data$strIngredient6,
+  drinks_data$strIngredient7, drinks_data$strIngredient8, drinks_data$strIngredient9,
+  drinks_data$strIngredient10, drinks_data$strIngredient11, drinks_data$strIngredient12,
+  drinks_data$strIngredient13, drinks_data$strIngredient14, drinks_data$strIngredient15
+) %>%
+  tolower() %>%
+  trimws() %>%
+  unique()
+
+# Create one-hot encoded columns for each ingredient
+for (ingredient in unique_ingredients) {
+  column_name <- paste0("ingredient_", gsub(" ", "_", ingredient))
+  drinks_data_encoded[column_name] <- as.integer(
+    rowSums(sapply(1:15, function(i) grepl(ingredient, drinks_data[[paste0("strIngredient", i)]], ignore.case = TRUE))) > 0
+  )
+}
+
+# Optionally, you can remove the individual ingredient columns
+drinks_data_encoded <- select(drinks_data_encoded, -starts_with("strIngredient"))
+
+# Verify the changes
+head(drinks_data_encoded)
+
+```
+
+Create one column per ingredient and put the measurements instead of the binary 1 and 0. If it is a 1, replace for the actual measurement of the ingredient per drinking.
+
+```{r}
+for (row_index in 1:nrow(drinks_data_combined)) {
+  # Iterate over columns Ingredients_Measures_X
+  for (i in 1:15) {
+    col_name <- paste("Ingredient_Measure_", i, sep = "")
+    
+    #Obtain entry of the current column
+    entry <- as.character(drinks_data_combined[row_index, col_name])
+    
+    # Verify if entry is NA and of type chr
+    if (!is.na(entry) && length(entry) > 0) {
+      # Separate ingredient and measurement
+      parts <- strsplit(entry, "; ", fixed = TRUE)[[1]]
+      
+      # Obtain ingredient and measurement
+      ingredient <- parts[1]
+      measure <- parts[2]
+      
+      # Value of the column that corresponds to ingredient and current row
+      drinks_data_combined[row_index, ingredient] <- measure
+    }
+  }
+}
+
+# Verify result
+head(drinks_data_combined)
+
+```
+
+Remove columns that have been wrangled using the binary approach. Also, remove those columns that do not contain enough or valuable information.
+
+```{r}
+# Eliminar columnas que contienen "Ingredient_Measure" en el nombre
+columns_to_remove <- grep("Ingredient_Measure", names(drinks_data_combined))
+drinks_data_combined <- drinks_data_combined[, -columns_to_remove]
+
+columns_to_remove <- grep("...1", names(drinks_data_combined))
+drinks_data_combined <- drinks_data_combined[, -columns_to_remove]
+
+columns_to_remove <- grep("strIBA", names(drinks_data_combined))
+drinks_data_combined <- drinks_data_combined[, -columns_to_remove]
+
+columns_to_remove <- grep("dateModified", names(drinks_data_combined))
+drinks_data_combined <- drinks_data_combined[, -columns_to_remove]
+
+columns_to_remove <- grep("idDrink", names(drinks_data_combined))
+drinks_data_combined <- drinks_data_combined[, -columns_to_remove]
+
+columns_to_remove <- grep("strVideo", names(drinks_data_combined))
+drinks_data_combined <- drinks_data_combined[, -columns_to_remove]
+
+columns_to_remove <- grep("NA", names(drinks_data_combined))
+drinks_data_combined <- drinks_data_combined[, -columns_to_remove]
+head(drinks_data_combined)
+```
+
+Change the names of the columns, and rearrange the information correctly to make sure that the cleaning process is complete.
+
+```{r}
+# Rename the column
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strDrink"] <- "Name"
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strAlcoholic"] <- "Type"
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strCategory"] <- "Category"
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strDrinkThumb"] <- "Picture"
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strGlass"] <- "Glass"
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "strInstructions"] <- "Recipe"
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "151 proof rum "] <- "bacardi rum"
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "151 proof rum "] <- "bacardi rum"
+colnames(drinks_data_combined)[colnames(drinks_data_combined) == "jägermeister "] <- "jagermeister"
+```
+
+Eliminate the inconsistencies found in the dataset, on the section of the measurements.
+
+```{r, warning=FALSE}
+# Assuming your dataframe is called drinks_data_combined
+drinks_data_combined <- mutate_all(drinks_data_combined, ~ifelse(. == "NA", NA, .))
+# Replace "your_column_names" with the actual names of columns 7 to 310 in your dataframe
+columns_to_modify <- colnames(drinks_data_combined)[7:310]
+
+# Use mutate_at to apply the string replacement to the selected columns
+drinks_data_combined <- mutate_at(drinks_data_combined, vars(columns_to_modify), funs(gsub("\\bbacardi\\b", "", .)))
+#removing whitespace in column names
+colnames(drinks_data_combined) <- colnames(drinks_data_combined) %>% str_trim()
+```
+
+The binary columns have been pasted at the end of the dataframe. A good identifier to separate them is that they contain the word ingredient in the name (you may use grepl).
+
+```{r}
+#dropping one NA in type and one NA in recipe
+cocktails <- drinks_data_combined %>% 
+  filter(!is.na(Type) & ! is.na(Recipe))
+```
+
+#Checking alcoholic drinks
+```{r}
+all_cols <- unique(colnames(cocktails)) %>% str_trim() %>% sort()
+
+categorical_vars <- c("Name", "Type", "Category", "Picture", "Glass", "Recipe")
+
+unique_ing_vec <- setdiff(all_cols, categorical_vars)
+
+alcohol_vec <- c("bacardi rum", "absinthe", "absolut citron", "absolut kurant", "absolut peppar", "absolut vodka", "advocaat", "ale", "amaretto", "anisette", "aperol", "apfelkorn", "apple brandy", "apple cider", "apple schnapps", "applejack", "apricot brandy", "aquavit", "añejo rum", "bacardi limon", "baileys irish cream", "banana liqueur", "beer", "benedictine", "black sambuca", "blackberry brandy", "blended whiskey", "blue curacao", "blueberry schnapps", "bourbon", "brandy", "butterscotch schnapps", "cachaca", "campari", "chambord raspberry liqueur", "champagne", "cherry brandy", "cherry heering", "cherry liqueur","chocolate liqueur", "cider", "coconut liqueur", "coconut rum", "coffee brandy", "coffee liqueur", "cognac", "cointreau", "corona", "cranberry vodka", "cream of coconut", "creme de banane", "creme de cacao", "creme de cassis", "creme de mure", "crown royal", "curacao", "dark creme de cacao", "dark rum","drambuie", "dry vermouth", "dubonnet rouge", "erin cream", "everclear", "firewater", "frangelico", "galliano", "gin", "godiva liqueur", "gold tequila", "goldschlager", "grain alcohol", "grand marnier", "green chartreuse", "green creme de menthe", "guinness stout", "hot damn", "irish cream", "irish whiskey", "jack daniels", "jim beam", "johnnie walker", "jagermeister", "kahlua", "kirschwasser", "kiwi liqueur", "lager", "lemon vodka", "light rum", "lillet blanc", "lime vodka", "malibu rum", "maraschino liqueur", "melon liqueur", "midori melon liqueur", "orange curacao", "ouzo", "peach brandy", "peach schnapps", "peach vodka", "peppermint schnapps", "peychaud bitters", "pisang ambon", "pisco", "port", "prosecco", "raspberry liqueur", "raspberry vodka", "red wine", "ricard", "rum", "rumple minze", "rye whiskey", "sambuca", "scotch", "sherry", "sloe gin", "southern comfort", "spiced rum", "st. germain", "strawberry liqueur", "strawberry schnapps", "sweet vermouth", "tennessee whiskey", "tequila", "tia maria", "triple sec", "vanilla vodka", "vermouth", "vodka", "whiskey", "white creme de menthe", "white rum", "wild turkey", "wine", "yellow chartreuse", "yukon jack")
+
+side_ing_vec <- setdiff(unique_ing_vec, alcohol_vec)
+```
+
+We have 8 cocktails that are marked as alcoholic but don't contain alcohol in the vector
+```{r}
+filtered_cocktails <- cocktails %>%
+  mutate(sums = rowSums(!is.na(.[, alcohol_vec]))) %>% 
+  select(sums, everything()) %>% 
+  filter(sums !=0)
+#467 of type alcoholic and 8 of optional alcohol
+filtered_cocktails %>% 
+  count(Type)
+#--> 475 which contain alcohol
+contain_alc <- filtered_cocktails %>% pull(Name)
+
+#486 which are of either type --> 11 which are missing
+are_alc <- cocktails %>% 
+  filter(Type =="alcoholic" | Type == "optional alcohol")
+
+# out of those 11, we had only 3 names which contained at least one ingredient
+are_alc %>%
+  filter(!Name %in% contain_alc) %>% 
+  select(-c(Category, Picture, Glass, Recipe)) %>%
+  pivot_longer(-c(Name, Type), names_to = "ingredient", values_to = "quantity", values_drop_na  = T)
+
+alcohol_vec <- append(alcohol_vec, c("maui","peachtree schnapps","surge")) %>% sort()
+```
+Dropping cocktails which contain no ingredients, or those that don't make sense:
+- black forest shake --> alcoholic but contains only ice
+- egg-nog - classic cooked --> optional alcohol but without alcohol ingredient listed
+- zoksel - alcoholic type but contains only coca-cola
+```{r}
+#filtering out the 3 cocktails in the list above
+cocktails <- cocktails %>% 
+  filter(!Name %in% c("black forest shake", "egg-nog - classic cooked", "zoksel"))
+
+#removing additional 7 cocktails which contain 0 ingredients
+cocktails <- cocktails %>% 
+  mutate(sums = rowSums(!is.na(.[, unique_ing_vec]))) %>%
+  filter(sums != 0) %>% 
+  select(-sums)
+```
+
+# Conversion function
+In this code we will create a function for transforming the units of the ingredients from imperial to international system. This will be incorporated as a function for the R package afterwards. The methodology for making the conversion is the following: We will upload the data, look at the information that contains the measurements. If the unit contains imperial units (for example ounces - oz) we will convert them to a practical unit in the international system (for example ml).
+
+We start by separating the string that contains the information for the measurements between number and unit. We intend to see how many different units we would need to pass from imperial to international.
+
+```{r}
+# Assuming your dataframe is named df
+library(stringr)
+
+# Specify the range of columns
+measure_cols <- cocktails[, 7:310]
+
+# Extract unique measurement units from all cells in the specified range
+unique_units <- unique(unlist(apply(measure_cols, c(1, 2), function(x) {
+  units <- str_extract(x, "[a-zA-Z]+")
+  units[!is.na(units)]  # Remove NAs
+})))
+
+```
+
+```{r}
+# Print the unique measurement units
+print(unique_units)
+```
+
+```{r}
+imperial<- c("oz", "gal", "qt","pint", "lb", "quart","inch")
+international <- c("cl","ml","dl","l","gr","kg")
+```
+
+The logical step would be making the conversion only for those units in imperial or international. While analyzing the data we realized that the numbers are not prepared for working in a conversion of units. the main issue is the following: we have high heterogeneity in the way in which numbers are presented. The following are the main options that have been spotted as examples: (1) 1 oz; (2) 1.5 lb; (3) 1/4 kg; (4) 1 1/2 spoon; (5) 1-2 dash. We need to create one single format to show the numbers, preferably as decimal or whole numbers, and not in fractional notation or as a range. For this purpose we implement the following function for homogenizing the numbers:
+
+```{r}
+correctFractions <- function(data, decimals = 1) {
+  # Iterate over the rows and columns of the dataset
+  for (i in 1:nrow(data)) {
+    for (j in 1:ncol(data)) {
+      # Check if the value follows the specified pattern for integers plus fraction
+      integerPattern <- "([0-9]+) ([0-9]+)/([0-9]+)"
+      if (!is.na(data[i, j]) && grepl(integerPattern, data[i, j])) {
+        # Extract parts of the value
+        parts <- str_match(data[i, j], integerPattern)
+        integerPart <- as.numeric(parts[2])
+        numerator <- as.numeric(parts[3])
+        denominator <- as.numeric(parts[4])
+        
+        # Calculate the sum
+        sumValue <- integerPart + numerator/denominator
+        
+        # Round the value to the specified number of decimals
+        roundedSum <- round(sumValue, decimals)
+        
+        # Create the new value without repeating the unit
+        new_value <- paste(roundedSum, gsub("\\d+ \\d+/\\d+ (.+)", "\\1", data[i, j]))
+        
+        # Update the dataset
+        data[i, j] <- new_value
+      } else {
+        # Check if the value follows the specified pattern for fractions
+        fractionPattern <- "([0-9]+)/([0-9]+)"
+        if (!is.na(data[i, j]) && grepl(fractionPattern, data[i, j])) {
+          # Extract parts of the value
+          parts <- str_match(data[i, j], fractionPattern)
+          numerator <- as.numeric(parts[2])
+          denominator <- as.numeric(parts[3])
+          
+          # Calculate the decimal value
+          decimalValue <- numerator/denominator
+          
+          # Round the value to the specified number of decimals
+          roundedValue <- round(decimalValue, decimals)
+          
+          # Create the new value
+          new_value <- paste(roundedValue, gsub("\\d+/\\d+ (.+)", "\\1", data[i, j]))
+          
+          # Update the dataset
+          data[i, j] <- new_value
+        } else {
+          # Check if the value follows the specified pattern for "number-dash-number"
+          dashPattern <- "([0-9]+)-([0-9]+)"
+          if (!is.na(data[i, j]) && grepl(dashPattern, data[i, j])) {
+            # Extract the part after the dash
+            parts <- str_match(data[i, j], dashPattern)
+            afterDash <- parts[3]
+            
+            # Create the new value
+            new_value <- paste(afterDash, gsub("\\d+-\\d+ (.+)", "\\1", data[i, j]))
+            
+            # Update the dataset
+            data[i, j] <- new_value
+          }
+        }
+      }
+    }
+  }
+  
+  # Remove any values of the type "space-number-slash-number"
+  data <- data.frame(lapply(data, function(x) gsub("\\s\\d+/\\d+", "", x, perl = TRUE)))
+  
+  # Clean column names and remove trailing whitespaces
+  colnames(data) <- gsub("\\.$", "", gsub("\\.", " ", colnames(data)))
+  colnames(data) <- gsub("\\s+$", "", colnames(data))
+  
+  # Print the final version of the dataset
+  return(data)
+}
+
+# Example usage:
+# df <- correctFractions(df, decimals = 1)
+
+
+# Function to clean column names (in case the inside function does not work in R package)
+# clean_column_names <- function(df) {
+#   colnames(df) <- gsub("\\.$", "", gsub("\\.", " ", colnames(df)))
+#   return(df)
+# }
+
+# Apply the function to the data frame
+cocktails <- correctFractions(cocktails, decimals = 2)
+
+# Print the cleaned data frame
+print(cocktails)
+```
+
+#Creating rda files
+```{r eval=FALSE}
+#usethis::use_data(cocktails, overwrite = TRUE)
+#usethis::use_data(unique_ing_vec, alcohol_vec, side_ing_vec, internal = TRUE, overwrite = TRUE)
+# usethis::use_data(unique_ing_vec)
+# usethis::use_data(alcohol_vec, overwrite = TRUE)
+# usethis::use_data(side_ing_vec)
+```
+

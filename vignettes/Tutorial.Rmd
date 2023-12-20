@@ -1,0 +1,15 @@
+---
+title: "Demo of the shiny app"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Demo of the shiny app}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This guide will introduce you to the app’s user interface and demonstrate how to navigate its versatile functionality. You’ll discover how to tailor your cocktail selections based on your preferences, utilize the Surprise Me feature for spontaneous recommendations, and make use of the filtering options to find your perfect drink mix.
+
+So, grab your shaker, pour yourself a drink 🍸, and let's dive into the Cocktail Selector Shiny app.
+
+<iframe width="650" height="315" src="https://www.youtube.com/embed/KjvwOH4jJc4" title="Shiny App Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+

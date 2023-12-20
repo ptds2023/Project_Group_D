@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Cocktail Explorer</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Candelaria Retamal, Jordan Vazquez, Nathan Vandeven, Radoslaw Mlynarczyk, Tiffany Davies" />
+    <script src="cocktail_presentation_files/header-attrs/header-attrs.js"></script>
+    <script src="cocktail_presentation_files/kePrint/kePrint.js"></script>
+    <link href="cocktail_presentation_files/lightable/lightable.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Cocktail Explorer
+]
+.subtitle[
+## A Shiny App for Mixology Enthusiasts
+]
+.author[
+### Candelaria Retamal, Jordan Vazquez, Nathan Vandeven, Radoslaw Mlynarczyk, Tiffany Davies
+]
+
+---
+
+
+
+
+
+
+
+## Your Evening, Your Elixir
+
+**Imagine:**
+  - An evening unfolds, and the craving for a delightful drink sets in.
+  - The world of mixology sprawls before you, full of possibilities but also overwhelming.
+
+**Our Solution:**
+  - A tool born from the fusion of technology and mixology.
+  - Simplifying your quest for the perfect evening elixir.
+
+**The Scene Unfolds:**
+  - An interactive platform designed to simplify your journey into the world of cocktails.
+  - Choose your ingredients, and let the tool curate tailored cocktails.
+  - No expertise needed; become your own mixologist effortlessly.
+
+---
+## The Vision Behind Our Mixological Innovation
+
+**Igniting the Project:**
+  - Fueled by a burning desire to fuse technology seamlessly with mixology.
+  - Our mission: Craft a practical tool that effortlessly empowers users to navigate the intricate world of cocktails.
+
+**Practical Prowess:**
+  - We set out to develop a tool immediately applicable to enhance the mixology experience.
+  - Guided by practicality, every decision aimed to ensure project feasibility within the given timeframe and leverage our R and Shiny expertise.
+
+**A Learning Expedition:**
+  - Beyond solving a problem, our project became a valuable learning journey.
+  - Motivated by the prospect of delving into R and Shiny, we embraced the challenge
+
+
+---
+
+## Logic Flow
+
+&lt;div style="text-align: center; margin-top: 10%;"&gt;
+
+  &lt;img src="cocktail_presentation_files/flowchart_v2.png" alt="Flowchart." style="max-width: 100%; max-height: 80vh;"/&gt;
+
+---
+
+## Overview of the drinks dataset
+
+- Drink names: a variety of drink names, indicating diverse beverages
+- Alcoholic content: specifies whether a drink is alcoholic or non-alcoholic
+- Image URLs: ULRs to images of the drinks
+- Ingredients and measures: detailed lists of ingredients and measures
+- Over 40 columns and over 500 cocktails offered
+- Preparation steps for creating a cocktail
+
+&lt;div style="text-align: center"&gt;
+ &lt;img src="cocktail_presentation_files/flowchart_data.png" alt="Flowchart." style="max-width: 50%; max-height: 40vh;"/&gt;
+
+
+---
+
+## Understanding ingredients and measurements structure
+
+
+1. Dynamic Column Creation: Starts with the first cocktail; columns added as per ingredients.
+2. Sequential Addition: New cocktails fill existing columns if they have equal or fewer ingredients.
+3. Expansion for More Ingredients: Additional columns created for cocktails with more ingredients.
+4. Parallel Structure for Measurements: 15 corresponding columns for measurements align with ingredients.
+5. Cumulative Column Growth: Reflects the cocktail with the highest number of ingredients.
+6. Flexible and Comprehensive: Ensures accommodation of cocktails with varying ingredients.
+
+&lt;table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Cocktail &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Ingredient 1 &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Ingredient 2 &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Ingredient 3 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Lime &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Vodka &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Raspberry &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Beer &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 3 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Cranberry &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Orange Juice &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Rum &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+---
+
+## Data wrangling: encoding
+
+- Hot encoding of ingredients: transitioned from 15 columns containing ingredients without a specific order to one column per ingredient
+- Encoding method: used the measurement as the value when an ingredient is present, NA otherwise
+- Handling diverse measurements: kept measurements in their original string format
+
+&lt;table class="table table-striped" style="width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Cocktail &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Ingredient 1 &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Ingredient 2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Lime &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Vodka &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Grape Juice &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; Beer &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table class="table table-striped" style="width: auto !important; "&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Cocktail &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Measure 1 &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Measure 2 &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1/2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 1/3 cup &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 50 ml &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.7 oz &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Cocktail &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Lime &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Grape Juice &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Vodka &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Beer &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1/2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 1/3 cup &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 50 ml &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.7 oz &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+## Data wrangling: unit homogenization
+
+- Measurements are Initially encountered in various formats like ‘1 ½ oz', '1/2 cup', '0.5', ‘1 ml' etc.
+- Each number is accompanied by a measurement unit, with over 90 different unit options
+- Homogenization to Decimals/Entire number: Standardized all measurements to decimal or entire format for consistency
+- We do this step to make it easier to convert units using the R package, enabling data manipulation
+
+&lt;table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Cocktail &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Lime &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Grape Juice &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Vodka &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Beer &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1/2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 1/3 cup &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 50 ml &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.7 oz &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br&gt;
+&lt;table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Cocktail &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Lime &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Grape Juice &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Vodka &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Beer &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.5 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1.33 cup &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; Cocktail 2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 50 ml &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; N/A &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 0.7 oz &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+---
+## Package functions
+
+Our package contains a total of 8 functions&lt;/b&gt;:
+
+- &lt;b&gt;3 internal functions&lt;/b&gt;
+  - renderSideIngredientUI
+  - updateSideIngredient
+  - welcomeMessage
+- &lt;b&gt;5 external functions that are exported&lt;/b&gt;
+   - cocktailApp
+   - filterCocktails
+   - ingredientsTable
+   - convertUnits
+   - surpriseMe
+   
+---
+## renderSideIngredientUI
+Renders the 3 dropdown menus dynamically
+
+```r
+renderSideIngredientUI &lt;- function(input, output) {
+  output$sideIngredient1Dropdown &lt;- renderUI({
+    if (!is.na(input$ingredient1) &amp;&amp; input$ingredient1 != "" &amp;&amp; input$ingredient1 != "Choose") {
+      selectInput("ingredient2", "Side Ingredient 1", choices = c("Choose" = ""), selected = "Choose", multiple = FALSE)
+    }
+  })
+
+  output$sideIngredient2Dropdown &lt;- renderUI({
+    if (isTruthy(input$ingredient2) &amp;&amp; input$ingredient2 != "Choose") {
+      selectInput("ingredient3", "Side Ingredient 2", choices = c("Choose" = ""), selected = "Choose", multiple = FALSE)
+    } else {
+      return(NULL)  # Return NULL if the condition is not met
+    }
+  })
+}
+```
+
+---
+## updateSideIngredients
+Updates which ingredients are shown in the dropdowns depending on previous selection.
+
+```r
+updateSideIngredients &lt;- function(input, session, cocktails) {
+  observeEvent(input$ingredient1, {
+    if (input$ingredient1 != "" &amp;&amp; input$ingredient1 != "Choose") {
+      compatible_cocktails &lt;- cocktails[!is.na(cocktails[[input$ingredient1]]), ]
+      ingredient_columns &lt;- colnames(cocktails)[7:ncol(cocktails)]
+      non_na_ingredients &lt;- ingredient_columns[colSums(!is.na(compatible_cocktails[ingredient_columns])) &gt; 0]
+      non_na_ingredients &lt;- setdiff(non_na_ingredients, input$ingredient1)
+      updateSelectInput(session, "ingredient2", choices = c("Choose" = "", sort(non_na_ingredients)))
+    } else {
+      updateSelectInput(session, "ingredient2", choices = c("Choose" = ""))
+    }
+  })
+
+  observeEvent(input$ingredient2, {
+    if (input$ingredient2 != "" &amp;&amp; input$ingredient2 != "Choose") {
+      compatible_cocktails &lt;- cocktails[!is.na(cocktails[[input$ingredient1]]) &amp; !is.na(cocktails[[input$ingredient2]]), ]
+      ingredient_columns &lt;- colnames(cocktails)[7:ncol(cocktails)]
+      non_na_ingredients &lt;- ingredient_columns[colSums(!is.na(compatible_cocktails[ingredient_columns])) &gt; 0]
+      non_na_ingredients &lt;- setdiff(non_na_ingredients, c(input$ingredient1, input$ingredient2))
+      updateSelectInput(session, "ingredient3", choices = c("Choose" = "", sort(non_na_ingredients)))
+    } else {
+      updateSelectInput(session, "ingredient3", choices = c("Choose" = ""))
+    }
+  })
+}
+```
+
+---
+## welcomeMessage
+Shows welcome message popup when launching the app
+
+```r
+welcomeMessage &lt;- function() {
+  message &lt;- HTML(paste0("Welcome to the Cocktail Explorer App!", '&lt;br/&gt;','&lt;br/&gt;',
+                   "Select your favorite alcohol and two ingredients, and let us surprise you with the best matching cocktails.", '&lt;br/&gt;',
+                   "Feeling adventurous today? Click on the Surprise Me button, and we'll pick the best drinks for you!", '&lt;br/&gt;', '&lt;br/&gt;',
+                   "You can also go to the instructions tab to learn more about the different features of the app.")
+                  )
+  return(message)
+}
+```
+
+---
+## cocktaiApp
+Launched shiny app
+
+```r
+cocktailApp &lt;- function(){
+  #ui
+  #server
+  #run the application
+  shinyApp(ui = ui, server = server)
+}
+```
+
+---
+## filterCocktails
+Takes the selection from the dropdowns and filters the cocktails dataframe
+
+```r
+filterCocktails &lt;- function(df, alcohol = NULL, ing1 = NULL, ing2 = NULL){
+  result &lt;- df
+    if (!is.null(alcohol) &amp;&amp; alcohol!="") {
+      result &lt;- result[!is.na(result[[alcohol]]), ]
+    }
+    if (!is.null(ing1) &amp;&amp; ing1!="") {
+      result &lt;- result[!is.na(result[[ing1]]), ]
+    }
+    if (!is.null(ing2) &amp;&amp; ing2!="") {
+      result &lt;- result[!is.na(result[[ing2]]), ]
+    }
+  return(result)
+}
+```
+
+---
+## ingredientsTable
+Returns a kable of ingredients and corresponding quantities for a specific cocktail
+
+```r
+ingredientsTable &lt;- function(df = cocktails, selected_cocktail) {
+  # Check if the selected cocktail is not in the df
+  if(!(selected_cocktail %in% df$Name)){
+    stop("This cocktail is not in the dataframe")
+  }
+  #creating table
+  ing_table &lt;- df %&gt;%
+    dplyr::filter(Name == selected_cocktail) %&gt;%
+    dplyr::select(-c(Type, Category, Picture, Glass, Recipe)) %&gt;%
+    tidyr::pivot_longer(-Name, names_to = "Ingredient", values_to = "Quantity", values_drop_na = TRUE) %&gt;%
+    dplyr::select(-Name) %&gt;%
+    kableExtra::kbl() %&gt;%
+    kableExtra::kable_styling("striped")
+
+  return(ing_table)
+}
+```
+
+---
+## convertUnits
+
+```r
+convertUnits &lt;- function(data, conversion_direction) {
+  if (conversion_direction == "imperial_to_international") {
+    for (i in 1:nrow(data)) {
+      for (j in 7:ncol(data)) {
+        if (!is.na(data[i, j])) {
+          parts &lt;- stringr::str_match(data[i, j], "([0-9.]+)\\s*([a-zA-Z]+)")
+          if (!is.null(parts) &amp;&amp; length(parts) == 3 &amp;&amp; parts[3] %in% imperial_units) {
+            value &lt;- as.numeric(parts[2])
+            unit &lt;- parts[3]
+            if (unit %in% c("oz", "gal", "qt", "pint", "quart")) {
+              # Convert volume to ml
+              converted_value &lt;- round(value * imperial_to_international[which(imperial_units == unit)], -1)
+              new_unit &lt;- "ml"
+            } else if (unit %in% c("lb")) {
+              # Convert mass to kg
+              converted_value &lt;- round(value * imperial_to_international[which(imperial_units == "lb")], 1)
+              new_unit &lt;- "kg"
+            } else if (unit %in% c("inch")) {
+              # Convert distance to cm
+              converted_value &lt;- round(value * imperial_to_international[which(imperial_units == "inch")], 1)
+              new_unit &lt;- "cm"
+            } else {
+              # Keep the original value if not in the specified units
+              converted_value &lt;- value
+              new_unit &lt;- unit
+            }
+            # Update the dataset
+            data[i, j] &lt;- paste(converted_value, new_unit)
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+---
+## surpriseMe
+Returns a random row within the cocktails dataframe
+
+```r
+surpriseMe &lt;- function(){
+  return(cocktails[sample(nrow(cocktails), 1), ])
+}
+```
+
+---
+## How does the shiny app look like?
+
+&lt;div style="text-align: center;"&gt;
+
+&lt;img src="fig/whole_app.png" alt="Whole app." style="max-width: 100%; max-height: 68vh;"/&gt;
+
+---
+## Main features
+We have 4 main functionalities in shiny:
+1. Filtering based on ingredients selected &amp;rarr; filterCocktails()
+2. Surprise me button &amp;rarr; shiny + surpriseMe()
+3. Measurement unit transformation &amp;rarr; convertUnits()
+4. See details for a selected cocktail &amp;rarr; shiny + ingredientsTable()
+
+---
+## Cocktail List
+
+&lt;div style="text-align: center;"&gt;
+
+&lt;img src="fig/filtering_markup.png" alt="Filtering markup." style="max-width: 100%; max-height: 65vh;"/&gt;
+
+---
+## Cocktail Details
+
+&lt;div style="text-align: center;"&gt;
+
+&lt;img src="fig/details.png" alt="Details." style="max-width: 100%; max-height: 65vh;"/&gt;
+
+---
+class: center, middle
+## Thank you for your attention! 
+
+
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"slideNumberFormat": "%current%",
+"highlightStyle": "github",
+"highlightLines": true,
+"ratio": "16:9",
+"countIncrementalSlides": true
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

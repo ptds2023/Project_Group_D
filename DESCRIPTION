@@ -1,13 +1,13 @@
 Package: CocktailSelector
 Type: Package
 Title: Cocktail Recommendation & Ingredients
-Version: 0.1.0
-Authors@R:
-    person("Nathan", "", email = "@unil.ch", role = c("aut", "cre"))
-    person("Radoslaw", "", email = "@unil.ch", role = c("aut", "cre"))
-    person("Candelaria", "Retamal", email = "candelaria.retamalmartinez@unil.ch", role = c("aut", "cre"))
-    person("Jordan", "Vazquez", email = "jordan.vazquez@unil.ch", role = c("aut", "cre"))
-Maintainer: jordan.vazquez@unil.ch
+Version: 1.0
+Authors@R:c(
+    person("Nathan", "Vandeven", email = "nathan.vandeven@unil.ch", role = c("aut")),
+    person("Tiffany", "Davies", email = "tiffany.davies@unil.ch", role = c("aut")),
+    person("Radoslaw", "Mlynarczyk", email = "radoslaw.mlynarczyk@unil.ch", role = c("aut")),
+    person("Candelaria", "Retamal", email = "candelaria.retamalmartinez@unil.ch", role = c("aut", "cre")),
+    person("Jordan", "Vazquez", email = "jordan.vazquez@unil.ch", role = c("aut")))
 Description: The CocktailSelector package can be used to find cocktails containing
     a pre-defined selection of ingredients. It give a list of cocktails satisfying
     the input criteria, shows the ingredients needed for that cocktail, and explains
@@ -16,5 +16,20 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    tidyverse
+    dplyr,
+    tidyr,
+    kableExtra,
+    shiny,
+    magrittr,
+    htmltools,
+    stringr,
+    bslib
+Suggests: 
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
 RoxygenNote: 7.2.3
+Depends: 
+    R (>= 3.5.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr

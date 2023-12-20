@@ -1,0 +1,42 @@
+---
+title: "How to Use the Cocktail App"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to Use the Cocktail App}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Introduction
+
+This document will help you navigate and utilize the app to its full potential, ensuring a delightful experience as you discover and mix cocktails.
+
+
+# Getting started 
+
+The Cocktail Selector is intuitive and user-friendly. Begin by launching the app through the cocktailApp() function, and you're ready to mix it up!
+
+
+# Navigating the App Interface
+
+The app consists of several tabs, each with specific functionality:
+
+- **Cocktail List Tab**:Select an alcohol type and additional ingredients (max 2 ingredients).View a list of cocktails that can be made with the selected ingredients.Clear selections to start over or be surprised with a random cocktail recommendation.
+
+- **Cocktail Details Tab**: Detailed information about the cocktail is displayed here.Users can view the cocktail's recipe, ingredients, and an image.
+
+- **Information Tab** : Instructions on using the app.
+
+
+# Using the App
+
+Begin with the base spirit selection, and watch as the app updates the ingredient to complement your choice. Discover recipes that match your preferences and click on any cocktail to unveil its secrets.
+
+- **Exploring Recipes**: The app will display drink options based on the selected ingredients. Click on any drink to view detailed information, such as the recipe and ingredients required.
+
+- **Clearing Selections**: At any point, use the 'Clear Ingredients' button to reset your selections and start over.
+
+- **Surprise Me Feature**: Not sure what you want? Use the 'Surprise Me' feature for a random drink selection.
+
+- **Unit conversion**: Switch between international (ml) and imperial (oz) units at your convenience, making the app versatile for global users.
+
