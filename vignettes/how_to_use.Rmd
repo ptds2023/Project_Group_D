@@ -44,6 +44,3 @@ Additional ingredient dropdowns will update based on the base alcohol selected.
 
 # Functions 
 You can find the different functions in the reference section 
-
-# Functions 
-You can find the different functions in the reference section 
