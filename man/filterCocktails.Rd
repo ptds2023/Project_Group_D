@@ -7,23 +7,24 @@
 filterCocktails(df, alcohol = NULL, ing1 = NULL, ing2 = NULL)
 }
 \arguments{
-\item{df}{A dataframe}
+\item{df}{The cocktails dataframe included in the package}
 
-\item{alcohol}{A string}
+\item{alcohol}{A string which is in the alcohol_Vec vector}
 
-\item{ing1}{A string}
+\item{ing1}{A string which is in the side_ing_vec vector}
 
-\item{ing2}{A string}
+\item{ing2}{A string which is in the side_ing_vec vector}
 }
 \value{
-a filtered drinks dataframe based on inputs
+A filtered drinks dataframe based on inputs
 }
 \description{
-The `cocktail_list` function is used to create the list of
+The \code{filterCocktails} function is used to create the list of
 drinks based on inputs from the dropdowns.
-It filters the datasets based on on alcohol and two side ingredients
-an returns a filtered dataframe with drink corresponding to those criteria.
+It filters the datasets based on one alcohol and two side ingredients
+and returns a filtered dataframe with drinks corresponding to those criteria.
 }
 \examples{
 filterCocktails(cocktails, "gin")
+filterCocktails(cocktails, "vodka", "cranberry juice")
 }

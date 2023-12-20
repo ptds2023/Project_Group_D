@@ -13,13 +13,12 @@ convertUnits(data, conversion_direction)
 (imperial_to_international or international_to_imperial)}
 }
 \value{
-A new dataframe with either imperial or international units
+A new dataframe convert to either imperial or international units
 }
 \description{
-The `convertUnits` function is used to convert imperial units to international, and vice versa.
+The \code{convertUnits} function is used to convert imperial units to international, and vice versa.
 It takes as input a data frame which contains values and units in volume, weight and height,
-and converts those units to the desired system. It can be used in conjunction to the
-`convertFractions` function.
+and converts those units to the desired system.
 }
 \examples{
 convertUnits(cocktails, "imperial_to_international")

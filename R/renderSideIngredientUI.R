@@ -1,8 +1,8 @@
 #' Dropdown rendering
 #'
-#' This functions dynamically renders the dropdown menus in the Shiny app UI
-#' @param input Shiny input
-#' @param output Shiny output
+#' This internal function dynamically renders the dropdown menus in the Shiny app UI
+#' @param input Shiny input from current session
+#' @param output Shiny output from current session
 #'
 #' @return Dynamically created dropdown menus
 renderSideIngredientUI <- function(input, output) {

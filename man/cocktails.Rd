@@ -14,7 +14,7 @@ A data frame with 534 rows and 310 columns:
   \item{Picture}{URL to the picture of the drink}
   \item{Glass}{Type of glass recommended for the drink}
   \item{Recipe}{Text description of the recipe to make the drink}
-  \item{304 ingredient}{All other columns which contain the amoung of each ingredients if present in the drink, and NAs if not}
+  \item{304 ingredients}{All other columns which contain the amoung of each ingredients if present in the drink, and NAs if not}
   ...
 }
 }

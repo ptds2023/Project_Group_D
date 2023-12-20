@@ -7,13 +7,13 @@
 renderSideIngredientUI(input, output)
 }
 \arguments{
-\item{input}{Shiny input}
+\item{input}{Shiny input from current session}
 
-\item{output}{Shiny output}
+\item{output}{Shiny output from current session}
 }
 \value{
 Dynamically created dropdown menus
 }
 \description{
-This functions dynamically renders the dropdown menus in the Shiny app UI
+This internal function dynamically renders the dropdown menus in the Shiny app UI
 }
