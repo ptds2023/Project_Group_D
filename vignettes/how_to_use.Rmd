@@ -1,23 +1,21 @@
 ---
-title: "How to Use the Cocktail Selector"
+title: "How to Use the Cocktail App"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{How to Use the Cocktail Selector}
+  %\VignetteIndexEntry{How to Use the Cocktail App}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 # Introduction
 
-This article will guide you through the Cocktail Selector package. You'll learn how to install the package, use its main functions, and explore the various features it offers.
+This document will help you navigate and utilize the app to its full potential, ensuring a delightful experience as you discover and mix cocktails.
 
-# Installation
 
-Install the Cocktail Selector from GitHub using `devtools`
+# Getting started 
 
-# Launching the Shiny App
+The Cocktail Selector is intuitive and user-friendly. Begin by launching the app through the cocktailApp() function, and you're ready to mix it up!
 
-To start the app, load the package "CocktailSelector" and call the "cocktailApp" function
 
 # Navigating the App Interface
 
@@ -31,8 +29,7 @@ The app consists of several tabs, each with specific functionality:
 
 # Using the App
 
-Start by choosing a base alcohol from the dropdown.
-Additional ingredient dropdowns will update based on the base alcohol selected.
+Begin with the base spirit selection, and watch as the app updates the ingredient to complement your choice. Discover recipes that match your preferences and click on any cocktail to unveil its secrets.
 
 - **Exploring Recipes**: The app will display drink options based on the selected ingredients. Click on any drink to view detailed information, such as the recipe and ingredients required.
 
@@ -40,7 +37,7 @@ Additional ingredient dropdowns will update based on the base alcohol selected.
 
 - **Surprise Me Feature**: Not sure what you want? Use the 'Surprise Me' feature for a random drink selection.
 
-- **Measurement units**: At any point, change the units : international = ml and imperial = oz
+- **Unit conversion**: Switch between international (ml) and imperial (oz) units at your convenience, making the app versatile for global users.
 
 # Functions 
-You can find the different functions in the reference section 
+The different functions used in the shiny app are explained in the home page and the reference section. 
