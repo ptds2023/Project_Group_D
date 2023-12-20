@@ -3,3 +3,5 @@
 ^LICENSE\.md$
 ^data-raw$
 ^slides$
+^_pkgdown\.yml$
+^pkgdown$

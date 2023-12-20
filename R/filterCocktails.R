@@ -14,7 +14,7 @@
 #' @export
 #'
 #' @examples
-#' cocktailList(cocktails, "gin")
+#' filterCocktails(cocktails, "gin")
 filterCocktails <- function(df, alcohol = NULL, ing1 = NULL, ing2 = NULL){
   result <- df
     if (!is.null(alcohol) && alcohol!="") {

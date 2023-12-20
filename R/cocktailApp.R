@@ -4,7 +4,6 @@
 #' @return Opens shiny app
 #' @import shiny
 #' @import htmltools
-#' @import shinythemes
 #' @importFrom magrittr %>%
 #' @export
 
@@ -96,6 +95,7 @@ cocktailApp <- function(){
       welcomeMessage()
     })
 
+
     filtered_data <- reactive({
       filterCocktails(cocktails, input$ingredient1, input$ingredient2, input$ingredient3)
     })
@@ -110,7 +110,9 @@ cocktailApp <- function(){
           wellPanel(
             fluidRow(
               column(6, div(style = "display: flex; align-items: center; height: 200px;",
-                            actionLink(inputId = paste("cocktail_click", i, sep = "_"), label = sub_data$Name[i]))),
+                            actionLink(inputId = paste("cocktail_click", i, sep = "_"), label = sub_data$Name[i])
+              )
+              ),
               column(6, img(src = sub_data$Picture[i], height = "200px"))
             )
           )
@@ -118,6 +120,8 @@ cocktailApp <- function(){
         do.call(tagList, cocktailList)
       }
     })
+
+
 
     selected_cocktail <- reactiveVal(NULL)
     show_details <- reactiveVal(FALSE)
@@ -128,28 +132,31 @@ cocktailApp <- function(){
     #   show_details(FALSE)
     # }, ignoreInit = TRUE)
 
-    # Reset cocktail details when the 'Cocktail List' tab is clicked
-    observeEvent(input$navbar, {
-      if (input$navbar == "Cocktail List") {
-        selected_cocktail(NULL)
-        show_details(FALSE)
-      }
+    # # Reset cocktail details when the 'Cocktail List' tab is clicked
+    # observeEvent(input$navbar, {
+    #   if (input$navbar == "Cocktail List") {
+    #     selected_cocktail(NULL)
+    #     show_details(FALSE)
+    #   }
+    # })
+
+    observe({
+      lapply(1:nrow(filtered_data()), function(i) {
+        observeEvent(input[[paste("cocktail_click", i, sep = "_")]], {
+          selected_cocktail(filtered_data()[i, ])
+          updateUnitsBasedOnRadioSelection()
+          show_details(TRUE)
+          updateNavbarPage(session, "navbar", selected = "Cocktail Details")
+        })
+      })
     })
 
-    # Observe cocktail clicks and update selected cocktail
-    observe({
-      for (i in 1:nrow(filtered_data())) {
-        local({
-          local_i <- i
-          observeEvent(input[[paste("cocktail_click", local_i, sep = "_")]], {
-            selected_cocktail(filtered_data()[local_i, ])
-            updateUnitsBasedOnRadioSelection()
-            show_details(TRUE)
-            updateNavbarPage(session, "navbar", selected = "Cocktail Details")
-          })
-        })
-      }
-    })
+    # updated_selected <- function(i){
+    #   selected_cocktail(filtered_data()[i, ])
+    #   updateUnitsBasedOnRadioSelection()
+    #   show_details(TRUE)
+    #   updateNavbarPage(session, "navbar", selected = "Cocktail Details")
+    # }
 
     # Handle "Surprise Me" button
     observeEvent(input$surpriseMeButton, {
@@ -207,6 +214,7 @@ cocktailApp <- function(){
 
     observeEvent(input$navbar, {
       if (input$navbar != "Cocktail Details") {
+        selected_cocktail(NULL)
         show_details(FALSE)
       }
     })
