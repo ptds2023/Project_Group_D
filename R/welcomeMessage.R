@@ -1,5 +1,6 @@
 #' Welcome message
 #'
+#' This internal function is called when the app is loaded and shows the welcome message in a popup.
 #' @return A welcome message in a popup in shiny
 welcomeMessage <- function() {
   message <- HTML(paste0("Welcome to the Cocktail Explorer App!", '<br/>','<br/>',

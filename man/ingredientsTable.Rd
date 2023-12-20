@@ -4,18 +4,18 @@
 \alias{ingredientsTable}
 \title{Render Ingredient-Quantity Table}
 \usage{
-ingredientsTable(df, selected_cocktail)
+ingredientsTable(df = cocktails, selected_cocktail)
 }
 \arguments{
-\item{df}{The cocktails dataframe}
+\item{df}{The cocktails dataframe from the package}
 
 \item{selected_cocktail}{A cocktail name string}
 }
 \value{
-An html table with ingredients and corresponding quantities
+An HTML table with ingredients and corresponding quantities
 }
 \description{
-The ingredientsTable function takes as input the cocktails dataframe and the
+The \code{ingredientsTable} function takes as input the cocktails dataframe and the
 name of a cocktail in that dataframe and returns its ingredients along with quantities.
 }
 \examples{

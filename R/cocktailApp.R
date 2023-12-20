@@ -1,7 +1,7 @@
 #' Shiny app function
 #'
-#' The `cocktailApp` function launches the shiny app directly from the package.
-#' @return Opens shiny app
+#' The \code{cocktailApp} function launches the shiny app directly from the package.
+#' @return Laucnhes the shiny app
 #' @import shiny
 #' @import htmltools
 #' @importFrom magrittr %>%
@@ -174,11 +174,11 @@ cocktailApp <- function(){
     })
 
     # Render ingredient-quantity table used in cocktail details tab
-    output$ingredientsTable <- renderTable({
+    output$ingredientsTable <- function(){
       df <- selected_cocktail()
       cocktail_name <- df$Name
       ingredientsTable(df, cocktail_name)
-    })
+    }
 
     # Call the function to render dynamic UI
     renderSideIngredientUI(input, output)
@@ -196,7 +196,6 @@ cocktailApp <- function(){
     # Observer resetting show_details and selected_cocktail reactive values when leaving details tab
     observeEvent(input$navbar, {
       if (input$navbar != "Cocktail Details") {
-        selected_cocktail(NULL)
         show_details(FALSE)
       }
     })

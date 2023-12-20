@@ -7,8 +7,8 @@
 cocktailApp()
 }
 \value{
-Opens shiny app
+Laucnhes the shiny app
 }
 \description{
-The `cocktailApp` function launches the shiny app directly from the package.
+The \code{cocktailApp} function launches the shiny app directly from the package.
 }

@@ -1,23 +1,20 @@
 #' Measurement Units Conversion (volume, weight and length)
 #'
-#' The `convertUnits` function is used to convert imperial units to international, and vice versa.
+#' The \code{convertUnits} function is used to convert imperial units to international, and vice versa.
 #' It takes as input a data frame which contains values and units in volume, weight and height,
-#' and converts those units to the desired system. It can be used in conjunction to the
-#' `convertFractions` function.
+#' and converts those units to the desired system.
 #' @param data A dataframe
 #' @param conversion_direction A string to define conversion direction
 #'    (imperial_to_international or international_to_imperial)
 #'
-#' @return A new dataframe with either imperial or international units
+#' @return A new dataframe convert to either imperial or international units
 #' @export
 #'
 #' @examples
 #' convertUnits(cocktails, "imperial_to_international")
 convertUnits <- function(data, conversion_direction) {
   # Define conversion factors
-  #imperial_to_international <- c(29.5735, 1000, 946.353, 473.176, 0.453592, 0.946353, 2.54)
   imperial_to_international <- c(29.5735, 3785.41, 946.353, 568, 0.453592, 946.353, 2.54)
-  #international_to_imperial <- c(0.033814, 0.001, 0.00105669, 0.00211338, 2.20462, 1.05669, 0.393701)
   international_to_imperial <- c(0.033814, 0.33814, 3.3814, 33.814, 0.00220462, 2.20462, 0.393701)
   # Define units for conversion
   imperial_units <- c("oz", "gal", "qt", "pint", "lb", "quart", "inch")
@@ -94,6 +91,6 @@ convertUnits <- function(data, conversion_direction) {
     stop("Invalid conversion direction. Please specify 'imperial_to_international' or 'international_to_imperial'.")
   }
 
-  # Print the final version of the dataset
+  # return the final version of the dataset
   return(data)
 }

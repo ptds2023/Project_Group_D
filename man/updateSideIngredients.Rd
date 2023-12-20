@@ -7,17 +7,17 @@
 updateSideIngredients(input, session, cocktails)
 }
 \arguments{
-\item{input}{Shiny input vector}
+\item{input}{Shiny input vector from current session}
 
-\item{session}{Shiny output vector}
+\item{session}{Shiny output vector from current session}
 
-\item{cocktails}{Cocktails dataframe}
+\item{cocktails}{Cocktails dataframe from the package}
 }
 \value{
 Updated dropdown menus
 }
 \description{
-This function dynamically updates the content inside the side ingredient dropdowns
-based on what alcohol was selected. It also prevents that a user can choose the
+This internal function dynamically updates the content inside the side ingredient dropdowns
+based on what alcohol and/or side ingredient 1 were selected. It also prevents a user from being able to choose the
 same side ingredient twice.
 }

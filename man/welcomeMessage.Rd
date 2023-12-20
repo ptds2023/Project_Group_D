@@ -10,5 +10,5 @@ welcomeMessage()
 A welcome message in a popup in shiny
 }
 \description{
-Welcome message
+This internal function is called when the app is loaded and shows the welcome message in a popup.
 }

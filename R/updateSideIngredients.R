@@ -1,11 +1,11 @@
 #' Update side ingredients content
 #'
-#' This function dynamically updates the content inside the side ingredient dropdowns
-#' based on what alcohol was selected. It also prevents that a user can choose the
+#' This internal function dynamically updates the content inside the side ingredient dropdowns
+#' based on what alcohol and/or side ingredient 1 were selected. It also prevents a user from being able to choose the
 #' same side ingredient twice.
-#' @param input Shiny input vector
-#' @param session Shiny output vector
-#' @param cocktails Cocktails dataframe
+#' @param input Shiny input vector from current session
+#' @param session Shiny output vector from current session
+#' @param cocktails Cocktails dataframe from the package
 #'
 #' @return Updated dropdown menus
 updateSideIngredients <- function(input, session, cocktails) {
