@@ -11,8 +11,11 @@ Welcome to the Cocktail Selector, an R package and Shiny app designed to help co
 Choosing the right drink from countless options can be overwhelming. The Cocktail Selector is here to make that choice easier. Whether you're hosting a party, exploring the world of mixology, or simply feeling adventurous, our package provides a user-friendly interface to explore and discover up to 600 drink recipes that match to your tastes.
 
 ### Features
+Here are the 4 features on our shiny app : 
 
 - **Select by Base**: Choose cocktails based on their base spirit.
 - **Filter by Taste**: Find cocktails that match your desired flavor profile. (max: 2 ingredients)
 - **Random Selector**: Not sure what you want? Let the 'Surprise Me' feature decide!
 - **measurement units**: You can choose the unit you want between oz(imperial) and ml(international) 
+
+You can check in our article section on how to use and install the R package
