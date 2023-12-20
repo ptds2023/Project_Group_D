@@ -5,3 +5,4 @@
 ^slides$
 ^_pkgdown\.yml$
 ^pkgdown$
+^docs$
