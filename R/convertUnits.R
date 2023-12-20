@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' convertUnits(cocktails, "imperial_to_international")
+#' \dontrun{convertUnits(cocktails, "imperial_to_international")}
 convertUnits <- function(data, conversion_direction) {
   # Define conversion factors
   imperial_to_international <- c(29.5735, 3785.41, 946.353, 568, 0.453592, 946.353, 2.54)

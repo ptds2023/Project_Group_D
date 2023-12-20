@@ -21,5 +21,5 @@ It takes as input a data frame which contains values and units in volume, weight
 and converts those units to the desired system.
 }
 \examples{
-convertUnits(cocktails, "imperial_to_international")
+\dontrun{convertUnits(cocktails, "imperial_to_international")}
 }

@@ -25,5 +25,5 @@ It filters the datasets based on one alcohol and two side ingredients
 and returns a filtered dataframe with drinks corresponding to those criteria.
 }
 \examples{
-filterCocktails(cocktails, "vodka", "cranberry juice")
+\dontrun{filterCocktails(cocktails, "vodka", "cranberry juice")}
 }

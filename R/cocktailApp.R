@@ -6,6 +6,9 @@
 #' @import htmltools
 #' @importFrom magrittr %>%
 #' @export
+#' @examples
+#' \dontrun{cocktailApp()}
+#'
 cocktailApp <- function(){
   pastel_green_color <- "#78c1ad"
   # Create UI

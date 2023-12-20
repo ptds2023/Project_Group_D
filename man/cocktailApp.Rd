@@ -12,3 +12,7 @@ Laucnhes the shiny app
 \description{
 The \code{cocktailApp} function launches the shiny app directly from the package.
 }
+\examples{
+\dontrun{cocktailApp()}
+
+}
