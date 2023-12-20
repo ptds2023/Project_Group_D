@@ -14,7 +14,6 @@
 #' @export
 #'
 #' @examples
-#' filterCocktails(cocktails, "gin")
 #' filterCocktails(cocktails, "vodka", "cranberry juice")
 filterCocktails <- function(df, alcohol = NULL, ing1 = NULL, ing2 = NULL){
   result <- df
