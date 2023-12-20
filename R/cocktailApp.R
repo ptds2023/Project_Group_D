@@ -110,7 +110,7 @@ cocktailApp <- function(){
           wellPanel(
             fluidRow(
               column(6, div(style = "display: flex; align-items: center; height: 200px;",
-                            actionLink(inputId = paste("cocktail_click", i, sep = "_"), label = sub_data$Name[i])
+                            actionLink(inputId = paste0("cocktail", i), label = sub_data$Name[i])
               )
               ),
               column(6, img(src = sub_data$Picture[i], height = "200px"))
@@ -140,14 +140,13 @@ cocktailApp <- function(){
     #   }
     # })
 
-    observe({
-      lapply(1:nrow(filtered_data()), function(i) {
-        observeEvent(input[[paste("cocktail_click", i, sep = "_")]], {
-          selected_cocktail(filtered_data()[i, ])
-          updateUnitsBasedOnRadioSelection()
-          show_details(TRUE)
-          updateNavbarPage(session, "navbar", selected = "Cocktail Details")
-        })
+    #creating observers for each input link
+    lapply(1:nrow(cocktails), function(i) {
+      observeEvent(input[[paste0("cocktail", i)]] , {
+        selected_cocktail(filtered_data()[i, ])
+        updateUnitsBasedOnRadioSelection()
+        show_details(TRUE)
+        updateNavbarPage(session, "navbar", selected = "Cocktail Details")
       })
     })
 
