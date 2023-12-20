@@ -15,7 +15,7 @@ updateSideIngredients <- function(input, session, cocktails) {
       ingredient_columns <- colnames(cocktails)[7:ncol(cocktails)]
       non_na_ingredients <- ingredient_columns[colSums(!is.na(compatible_cocktails[ingredient_columns])) > 0]
       non_na_ingredients <- setdiff(non_na_ingredients, input$ingredient1)
-      updateSelectInput(session, "ingredient2", choices = c("Choose" = "", non_na_ingredients))
+      updateSelectInput(session, "ingredient2", choices = c("Choose" = "", sort(non_na_ingredients)))
     } else {
       updateSelectInput(session, "ingredient2", choices = c("Choose" = ""))
     }
@@ -27,7 +27,7 @@ updateSideIngredients <- function(input, session, cocktails) {
       ingredient_columns <- colnames(cocktails)[7:ncol(cocktails)]
       non_na_ingredients <- ingredient_columns[colSums(!is.na(compatible_cocktails[ingredient_columns])) > 0]
       non_na_ingredients <- setdiff(non_na_ingredients, c(input$ingredient1, input$ingredient2))
-      updateSelectInput(session, "ingredient3", choices = c("Choose" = "", non_na_ingredients))
+      updateSelectInput(session, "ingredient3", choices = c("Choose" = "", sort(non_na_ingredients)))
     } else {
       updateSelectInput(session, "ingredient3", choices = c("Choose" = ""))
     }
