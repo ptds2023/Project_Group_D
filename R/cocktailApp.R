@@ -145,8 +145,7 @@ cocktailApp <- function(){
     # Observer for "Surprise Me" button
     observeEvent(input$surpriseMeButton, {
       if (nrow(cocktails) > 0) {
-        random_cocktail <- cocktails[sample(nrow(cocktails), 1), ]
-        selected_cocktail(random_cocktail)
+        selected_cocktail(surpriseMe())
         updateUnitsBasedOnRadioSelection()
         show_details(TRUE)
         updateNavbarPage(session, "navbar", selected = "Cocktail Details")
