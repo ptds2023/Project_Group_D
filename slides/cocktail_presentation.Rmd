@@ -5,6 +5,7 @@ author: "Candelaria Retamal, Jordan Vazquez, Nathan Vandeven, Radoslaw Mlynarczy
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
+      
     nature:
       slideNumberFormat: "%current%"
       highlightStyle: github
@@ -28,7 +29,7 @@ knitr::opts_chunk$set(
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
 style_duo_accent(
-  primary_color = "#808080",
+  primary_color = "#3EB489",
   inverse_header_color = "#FFFFFF"
 )
 ```
@@ -43,89 +44,211 @@ Why do we use R and Shiny and what is the power behind them? What was our vision
 
 How did we structure our work? What were the steps?
 
-**Results**
+**Results - Shiny and R package**
 
-... to fill out
+How does the Shiny and R package work? What are the most important features?
 
-**Demonstration & Conclusion**
+**Our website & demonstration**
 
-... to fill out
+Let's see what we achieved!
 
 ---
 
-## The Power of R and Shiny
+## R and Shiny Empowering Mixology Exploration
 
 - The world of mixology is vast, with countless cocktail possibilities. As aspiring programmers, we saw an opportunity to blend technology with mixology to create a unique and interactive experience.
 
 - **R Language:**
-  - Renowned for its statistical computing and data visualization capabilities.
-  - Widely used in academia, industry, and research.
+    - Enabled efficient data processing.
+    - Facilitated seamless integration with our mixology dataset.
+    - Facilitated dynamic exploration of 600 curated cocktails.
 
 - **Shiny App:**
-  - A web application framework for R.
-  - Bridges the gap between data analysis and interactive web applications.
+    - Provided an interactive platform for users to explore cocktails.
+    - Bridged the gap between mixology knowledge and technology.
+    - Transformed our vision into an engaging user interface.
+    - Enabled users to discover, search, and receive personalized cocktail recommendations.
 
 ---
 
-## Why R and Shiny?
+## Our motivation
 
-- **R's Ubiquity:**
-  - Over 2 million users globally
-  - 70% of data scientists prefer R for data analysis
+- **Project Inspiration:**
+  - Fueled by a desire to merge technology and mixology, our vision was to create a practical tool that empowers users to explore the world of cocktails effortlessly.
 
-- **Shiny's Impact:**
-  - Rapidly gaining popularity in the data science community.
-  - 350,000+ Shiny apps deployed
+- **Practicality:**
+    - We aimed to develop a tool that users can immediately apply to enhance their mixology experience.
+    - Practicality guided our decisions, ensuring the project remained feasible within the given timeframe and our R and Shiny expertise.
 
-- **Numeric Evidence:**
-  - **% Growth in R Usage:**
-    Up by 40% in the last three years
-    
-  - **Shiny's Adoption:**
-    60% increase in Shiny usage in the past year
+- **Learning Journey:**
+    - Motivated by the opportunity to delve into R and Shiny, our project served as a valuable learning experience.
+    - We embraced the challenge of combining programming skills with mixology, expanding our knowledge in both domains.
 
 ---
 
-## Our Vision
-
-- **The Idea:**
-  - Empowering users to discover cocktails based on chosen ingredients.
-
-- **Key Features:**
-  - Explore a database of 600 curated cocktails.
-  - Search for cocktails based on chosen ingredients.
-  - Get personalized recommendations.
-
----
-
-## Project Structure
-
-1. **Data Preparation:**
-   - Load and clean the cocktail database.
-   - Structure data for efficient querying.
-
-2. **Function Building:**
-   - Define functions for search, recommendation, and data processing.
-   - Utilize packages like `dplyr`, `shiny`, and others.
-
----
 ## Logic Flow
 
+<div style="text-align: center; margin-top: 10%;">
 
-![Flowchart.](cocktail_presentation_files/flowchart_final.png)
+  <img src="cocktail_presentation_files/flowchart_final.png" alt="Flowchart." style="max-width: 100%; max-height: 80vh;"/>
+
+---
+
+## Overview of the drinks dataset
+
+- Drink names: a variety of drink names, indicating diverse beverages
+- Alcoholic content: specifies whether a drink is alcoholic or non-alcoholic
+- Image URLs: ULRs to images of the drinks
+- Ingredients and measures: detailed lists of ingredients and measures
+- Over 40 columns and over 500 cocktails offered
+- Preparation steps for creating a cocktail
+
+<div style="text-align: center">
+ <img src="cocktail_presentation_files/flowchart_data.png" alt="Flowchart." style="max-width: 50%; max-height: 40vh;"/>
 
 
 ---
 
-## Shiny App
+## Understanding ingredients and measurements structure
 
+
+1. Dynamic Column Creation: Starts with the first cocktail; columns added as per ingredients.
+2. Sequential Addition: New cocktails fill existing columns if they have equal or fewer ingredients.
+3. Expansion for More Ingredients: Additional columns created for cocktails with more ingredients.
+4. Parallel Structure for Measurements: 15 corresponding columns for measurements align with ingredients.
+5. Cumulative Column Growth: Reflects the cocktail with the highest number of ingredients.
+6. Flexible and Comprehensive: Ensures accommodation of cocktails with varying ingredients.
+
+```{r, echo=FALSE}
+
+library(knitr)
+library(kableExtra)
+
+# Creating a data frame
+cocktail_data <- data.frame(
+  Cocktail = c("Cocktail 1", "Cocktail 2", "Cocktail 3"),
+  Ingredient_1 = c("Lime", "Raspberry", "Cranberry"),
+  Ingredient_2 = c("Vodka", "Beer", "Orange Juice"),
+  Ingredient_3 = c("N/A", "N/A", "Rum")
+)
+
+kable(cocktail_data, format = "html", 
+      col.names = c("Cocktail", "Ingredient 1", "Ingredient 2", "Ingredient 3"),
+      align = "c") %>%
+  kable_styling("striped", full_width = FALSE) 
+  
+```
 ---
 
-## R Package
+## Data wrangling: encoding
 
+- Hot encoding of ingredients: transitioned from 15 columns containing ingredients without a specific order to one column per ingredient
+- Encoding method: used the measurement as the value when an ingredient is present, NA otherwise
+- Handling diverse measurements: kept measurements in their original string format
+
+```{r, echo=FALSE}
+
+library(knitr)
+library(kableExtra)
+
+# Creating a data frame
+cocktail_data2 <- data.frame(
+  Cocktail = c("Cocktail 1", "Cocktail 2"),
+  Ingredient_1 = c("Lime", "Grape Juice"),
+  Ingredient_2 = c("Vodka", "Beer")
+)
+
+# Displaying the table using kable with formatting
+kable(cocktail_data2, format = "html", 
+      col.names = c("Cocktail", "Ingredient 1", "Ingredient 2"),
+      align = "c") %>%
+  kable_styling("striped", full_width = FALSE)
+
+```
+
+```{r, echo=FALSE}
+
+library(knitr)
+library(kableExtra)
+
+# Creating a data frame
+cocktail_data3 <- data.frame(
+  Cocktail = c("Cocktail 1", "Cocktail 2"),
+  Measure_1 = c("1/2", "50 ml"),
+  Measure_2 = c("1 1/3 cup", "0.7 oz")
+)
+
+# Displaying the table using kable with formatting
+kable(cocktail_data3, format = "html", 
+      col.names = c("Cocktail", "Measure 1", "Measure 2"),
+      align = "c") %>%
+  kable_styling("striped", full_width = FALSE)
+
+```
+<br>
+```{r, echo=FALSE}
+
+library(knitr)
+library(kableExtra)
+
+# Creating a data frame
+cocktail_data4 <- data.frame(
+  Cocktail = c("Cocktail 1", "Cocktail 2"),
+  Lime = c("1/2", "N/A"),
+  Grape_juice = c("N/A", "50 ml"),
+  Vodka = c("1 1/3 cup", "N/A"),
+  Beer = c("N/A", "0.7 oz")
+)
+
+# Displaying the table using kable with formatting
+kable(cocktail_data4, format = "html", 
+      col.names = c("Cocktail", "Lime", "Grape Juice", "Vodka", "Beer"),
+      align = "c") %>%
+  kable_styling("striped", full_width = FALSE)
+
+```
 ---
+## Data wrangling: unit homogenization
 
-## Demonstration
+- Measurements are Initially encountered in various formats like ‘1 ½ oz', '1/2 cup', '0.5', ‘1 ml' etc.
+- Each number is accompanied by a measurement unit, with over 90 different unit options
+- Homogenization to Decimals/Entire number: Standardized all measurements to decimal or entire format for consistency
+- We do this step to make it easier to convert units using the R package, enabling data manipulation
+
+```{r, echo=FALSE}
+
+library(knitr)
+library(kableExtra)
+
+kable(cocktail_data4, format = "html", 
+      col.names = c("Cocktail", "Lime", "Grape Juice", "Vodka", "Beer"),
+      align = "c") %>%
+  kable_styling("striped", full_width = FALSE, position="center")
+
+```
+<br>
+
+```{r, echo=FALSE}
+
+library(knitr)
+library(kableExtra)
+
+# Creating a data frame
+cocktail_data5 <- data.frame(
+  Cocktail = c("Cocktail 1", "Cocktail 2"),
+  Lime = c("0.5", "N/A"),
+  Grape_juice = c("N/A", "50 ml"),
+  Vodka = c("1.33 cup", "N/A"),
+  Beer = c("N/A", "0.7 oz")
+)
+
+# Displaying the table using kable with formatting
+kable(cocktail_data5, format = "html", 
+      col.names = c("Cocktail", "Lime", "Grape Juice", "Vodka", "Beer"),
+      align = "c") %>%
+  kable_styling("striped", full_width = FALSE,position="center")
+
+```
 
 ---
 
