@@ -24,7 +24,10 @@ Imports:
     rlang, 
     htmltools,
     stringr,
-    shinythemes
+    bslib
 RoxygenNote: 7.2.3
 Depends: 
     R (>= 3.5.0)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

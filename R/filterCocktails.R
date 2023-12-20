@@ -1,20 +1,20 @@
 #' Filtering cocktails list
 #'
-#' The `cocktail_list` function is used to create the list of
+#' The `filterCocktails` function is used to create the list of
 #' drinks based on inputs from the dropdowns.
 #' It filters the datasets based on on alcohol and two side ingredients
 #' an returns a filtered dataframe with drink corresponding to those criteria.
 #'
-#' @param df A dataframe
-#' @param alcohol A string
-#' @param ing1 A string
-#' @param ing2 A string
+#' @param df The cocktails dataframe included in the package
+#' @param alcohol A string which is in the alcohol_Vec vector
+#' @param ing1 A string which is in the side_ing_vec vector
+#' @param ing2 A string which is in the side_ing_vec vector
 #'
 #' @return a filtered drinks dataframe based on inputs
 #' @export
 #'
 #' @examples
-#' cocktailList(cocktails, "gin")
+#' filterCocktails(cocktails, "gin")
 filterCocktails <- function(df, alcohol = NULL, ing1 = NULL, ing2 = NULL){
   result <- df
     if (!is.null(alcohol) && alcohol!="") {
