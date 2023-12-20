@@ -4,15 +4,13 @@
 \alias{convertUnits}
 \title{Measurement Units Conversion (volume, weight and length)}
 \usage{
-convertUnits(data, conversion_direction, min_decimals = -1)
+convertUnits(data, conversion_direction)
 }
 \arguments{
 \item{data}{A dataframe}
 
 \item{conversion_direction}{A string to define conversion direction
 (imperial_to_international or international_to_imperial)}
-
-\item{min_decimals}{The number of decimals of converted numbers}
 }
 \value{
 A new dataframe with either imperial or international units
