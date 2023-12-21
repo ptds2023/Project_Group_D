@@ -3,7 +3,7 @@ name: Pkgdown Site
 on:
   push:
     branches:
-      - package-shiny
+      - main
   workflow_dispatch:
 
 jobs:
