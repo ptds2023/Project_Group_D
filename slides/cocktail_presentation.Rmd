@@ -1,7 +1,7 @@
 ---
 title: "Cocktail Explorer" 
 subtitle: "A Shiny App for Mixology Enthusiasts"
-author: "Candelaria Retamal, Jordan Vazquez, Nathan Vandeven, Radoslaw Mlynarczyk, Tiffany Davies"
+author: " Tiffany Davies, Radoslaw Mlynarczyk, Candelaria Retamal, Nathan Vandeven, Jordan Vazquez"
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
@@ -121,9 +121,7 @@ cocktail_data <- data.frame(
 cocktail_data
 ```
 ---
-
 ## Data wrangling: encoding
-
 - Hot encoding of ingredients: transitioned from 15 columns containing ingredients without a specific order to one column per ingredient
 - Encoding method: used the measurement as the value when an ingredient is present, NA otherwise
 - Handling diverse measurements: kept measurements in their original string format
@@ -140,7 +138,7 @@ cocktail_data2 <- data.frame(
   kable_styling("striped", full_width = FALSE, position = "left")
 cocktail_data2
 ```
-
+<br>
 ```{r, echo=FALSE}
 # Creating a data frame
 cocktail_data3 <- data.frame(
@@ -153,7 +151,7 @@ cocktail_data3 <- data.frame(
   kable_styling("striped", full_width = FALSE, position = "left")
 cocktail_data3
 ```
-
+<br>
 ```{r, echo=FALSE}
 # Creating a data frame
 cocktail_data4 <- data.frame(
@@ -204,6 +202,10 @@ kable(cocktail_data5, format = "html",
   kable_styling("striped", full_width = FALSE,position="center")
 ```
 
+---
+## Website
+<div style="text-align: center;">
+<img src="fig/website.png" alt="Website" style="max-width: 100%; max-height: 50vh;"/>
 ---
 ## Package functions
 
@@ -396,7 +398,7 @@ surpriseMe <- function(){
 
 ---
 ## Main features
-We have 4 main functionalities in shiny:
+<b>We have 4 main functionalities in our Shiny App:</b>
 1. Filtering based on ingredients selected &rarr; filterCocktails()
 2. Surprise me button &rarr; shiny + surpriseMe()
 3. Measurement unit transformation &rarr; convertUnits()
@@ -419,8 +421,3 @@ We have 4 main functionalities in shiny:
 ---
 class: center, middle
 ## Thank you for your attention! 
-
-
-
-
-
