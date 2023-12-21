@@ -1,7 +1,7 @@
 #' Shiny app function
 #'
 #' The \code{cocktailApp} function launches the shiny app directly from the package.
-#' @return Laucnhes the shiny app
+#' @return Launches the shiny app
 #' @import shiny
 #' @import htmltools
 #' @importFrom magrittr %>%
